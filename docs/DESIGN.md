@@ -1,40 +1,34 @@
-# Design
+# Design: "Adire Night"
 
-## Colors: "Harmattan Dusk"
+## The idea
+Tokende should feel like the moment before a trip: the night sky before an early flight, the sun coming up on the way to the airport. It's built Africa-first, so the palette comes from **adire**, the indigo resist-dyed cloth of West Africa, and from the **harmattan sunrise**.
 
-| Token | Color | Meaning |
-|---|---|---|
-| `--ink` | `#14213D` deep indigo | Trust and seriousness, like a passport cover. Hero, footer and text. |
-| `--sun` | `#F2A541` sunset gold | Warmth and optimism, the African sun. Highlights and the main "Check visa" action. |
-| `--forest` | `#0F5C4D` savanna green | Approved and safe. Good months, approvals and official links. |
-| `--hibiscus` | `#C8306E` hibiscus | Energy and the brand mark. Primary buttons such as Ask and Join. |
-| `--bg` / `--surface` | cool off-white / white | Calm, readable pages. |
+## Colors
 
-Red is used only for "not ideal" months and refusals, so it always means something. Every color has a dark-mode version that follows the visitor's system setting.
+| Token | Dark | Light | Meaning |
+|---|---|---|---|
+| `--bg` | `#0B1026` night indigo | `#F5F4FF` lavender white | Calm canvas. Dark mode is the signature look. |
+| `--sunrise` → `--gold` | `#FF6B4A` → `#FFC24B` | deeper versions | "Let's go": main buttons, highlights, gradient headlines |
+| `--mint` | `#3DDBB4` | `#0E9F7E` | Good news: visa-free, approved, been there |
+| `--gold` alone | `#FFC24B` | `#B67A00` | Takes a little effort: eVisa, trips coming up, this month |
+| `--sunrise` alone | `#FF6B4A` | `#E5532F` | Plan ahead: visa required, not-ideal months |
+| `--lilac` | `#B79CFF` | `#7B5CE0` | People and community, dream trips, vibes |
+| `--indigo` | `#5B6CF0` | `#3443B8` | Adire indigo for art and maps |
+
+Colors always mean the same thing. Mint is always "good", gold is always "some effort", coral is always "plan ahead".
 
 ## Type
+- **Unbounded** for headings: wide and confident, like a boarding pass or departure board.
+- **Instrument Sans** for body text: clean and very readable on small phones.
+- **IBM Plex Mono** for labels, months and stamps, like travel documents.
 
-- **Bricolage Grotesque** for headings: friendly, modern, a bit of personality.
-- **Figtree** for body text: very readable on small phones.
-- **JetBrains Mono** for small labels and "stamps", which echoes passport stamps and airport codes.
+## Art without stock photos
+- **Country posters** are generated: a sky gradient by region (Africa = sunrise, Asia = lagoon, Europe = lilac dusk) with an adire-inspired motif of concentric circles, dots and stitched lines. Each country gets its own variation. They load instantly on mobile data and never look like generic stock photos.
+- **Feel it scenes** are animated illustrations (ocean, forest, city, market, waterfall, desert wind) paired with a generated soundscape.
+- Real photos from travellers can come later through the community. See `IMAGES.md`.
 
-## Layout principles
-
-1. **One job per page.** The homepage gets people to check a route or ask Ama. A route page gets them to prepare (checklist), learn (stories) and act (review or insurance).
-2. **Hard facts first, then community, then offers.** Trust comes before selling.
-3. **Every fact has a date and an official link.**
-4. **Mobile-first.** Most visitors will be on phones and mobile data, so there are no heavy images or video by default.
-5. **Clear labels on money.** Partner links say they're partner links. Paid plans say exactly what's included.
-
-## Page map
-
-```
-/                         Hero (visa checker + Ama), problems, popular routes, in-season countries, how it works, plans, email
-/visa                     Picker, routes by passport, visa types, playbook
-/visa/[passport]-to-[dest] Requirements, checklist, community stats and stories, share form, official links, review offer, partners
-/countries                Africa → Asia → Europe grids with month strips
-/countries/[slug]         Best months, weather, itinerary, facts, budget, money tip, partners
-/agent                    Full chat with Ama
-/pricing                  Free, Visa Ready, Application Review
-/about, /legal            Trust pages
-```
+## Layout
+- **App-first:** on phones, a bottom tab bar (Home, Discover, Visa, My trips, Community) and a top bar with Wazi; on desktop, a side menu.
+- **Installable:** `manifest.webmanifest` lets people add it to their home screen like an app. The same code can later be wrapped for the App Store and Google Play (for example with Capacitor), or rebuilt in React Native.
+- **One job per screen.** Personal info comes first: your passport's visa status, your vibe match, your trips.
+- **Facts always carry a date and a source.**

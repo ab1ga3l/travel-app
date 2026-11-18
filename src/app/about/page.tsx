@@ -1,27 +1,26 @@
 import type { Metadata } from "next";
-import { SITE } from "@/lib/site";
+import { APP } from "@/lib/site";
 
-export const metadata: Metadata = { title: "About us" };
+export const metadata: Metadata = { title: "About" };
 
 export default function About() {
   return (
-    <section className="section">
-      <div className="wrap" style={{ maxWidth: 760 }}>
-        <span className="eyebrow">About {SITE.name}</span>
-        <h1 style={{ marginTop: 10 }}>Built by travelers who know the visa queue</h1>
-        <div style={{ display: "grid", gap: 16, marginTop: 20, fontSize: "1.05rem" }}>
-          <p>
-            Most travel websites assume you can just book a flight and go. If you hold an African passport, the trip starts months earlier: appointments, bank statements, cover letters and the fear of losing your fee to a refusal.
-          </p>
-          <p>
-            {SITE.name} puts that part first. We explain visa requirements in plain language, collect real stories from people with your passport, and pair them with country guides that tell you the best months to go and what a day really costs.
-          </p>
-          <p>
-            We start with Africa, then Asia and Europe. Our facts carry a date and a link to the official source, and our AI assistant, {SITE.agentName}, is built to say &ldquo;check the embassy&rdquo; rather than guess.
-          </p>
-          {SITE.contactEmail && <p>Say hello: {SITE.contactEmail}</p>}
-        </div>
+    <div className="stack-lg fade-in" style={{ maxWidth: 760 }}>
+      <span className="eyebrow">About {APP.name} · {APP.meaning}</span>
+      <h1>Built for passports that <span className="gradient-text">have to try harder.</span></h1>
+      <div className="stack" style={{ fontSize: "1.05rem" }}>
+        <p>Most travel apps assume you can book a flight and go. If you hold an African passport, the trip starts months earlier: appointments, bank statements, cover letters, and the fear of losing your fee to a refusal.</p>
+        <p>{APP.name} puts that first. Every country shows what your passport needs, what to prepare and what other travellers experienced. Then comes the fun part: places that match your vibe, hidden gems you can feel before you go, and a map of everywhere you&apos;ve been.</p>
+        <p>We start with Africa, then Asia and Europe. Facts carry a date and an official source, and {APP.assistant}, our assistant ({APP.assistantMeaning}), checks official sites instead of guessing.</p>
       </div>
-    </section>
+      <div className="card">
+        <h3>Where our data comes from</h3>
+        <ul className="list">
+          <li>Entry rules for every passport: the open Passport Index dataset (MIT licence, updated February 2026).</li>
+          <li>Visa checklists, fees and processes: official government and embassy pages, checked November 2026.</li>
+          <li>Ratings, stories and tips: travellers in our community.</li>
+        </ul>
+      </div>
+    </div>
   );
 }

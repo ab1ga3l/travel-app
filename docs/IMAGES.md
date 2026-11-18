@@ -1,6 +1,6 @@
 # Images: what to use and where to get them
 
-The site ships with **no stock photos** on purpose. It uses an original geometric band (`src/components/Band.tsx`), color and typography so it loads fast on mobile data and feels like a product, not a brochure. Add photos only where they build trust.
+The site ships with **no stock photos** on purpose. It uses generated country posters and animated scenes (`src/components/Poster.tsx`, `src/components/FeelIt.tsx`), color and typography so it loads fast on mobile data and feels like a product, not a brochure. Add photos only where they build trust.
 
 ## Where photos help (add these first)
 

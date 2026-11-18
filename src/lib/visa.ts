@@ -42,6 +42,12 @@ export interface GroupRule {
   tips: string[];
   official: { label: string; url: string }[];
   appliesTo: string;
+  /** What "proof of funds" usually means for this visa. */
+  money: string;
+  /** Can you stay longer once you're there? */
+  extension: string;
+  /** How the government fee is paid. */
+  payment: string;
 }
 
 const COMMON_DOCS = [
@@ -77,6 +83,9 @@ export const GROUP_RULES: Record<VisaGroup, GroupRule> = {
       { label: "EU travel portal (EES and ETIAS)", url: "https://travel-europe.europa.eu/" },
     ],
     appliesTo: "Most African passports need this visa. Mauritius and Seychelles passports are visa-free.",
+    money: "Most consulates want 3–6 months of bank statements showing regular income and enough to cover the trip. Many publish a daily minimum (for example France asks for about €120 a day without a hotel booking). Statements should be recent, stamped or verifiable, and match your payslips.",
+    extension: "Rarely. Only for exceptional reasons (force majeure, illness, serious personal reasons), applied for at the local immigration office before your visa ends.",
+    payment: "Paid when you submit at the visa centre, usually in local currency by card, bank transfer or cash, depending on the country's provider.",
   },
   uk: {
     visaName: "UK Standard Visitor visa",
@@ -93,6 +102,9 @@ export const GROUP_RULES: Record<VisaGroup, GroupRule> = {
     ],
     official: [{ label: "GOV.UK: Standard Visitor visa", url: "https://www.gov.uk/standard-visitor" }],
     appliesTo: "Most African passports need a visa. Mauritius and Seychelles passport holders use the UK ETA instead.",
+    money: "Show you can pay for the trip without working or public funds: usually 6 months of statements and payslips. There is no fixed minimum; what matters is that your income, savings and trip cost make sense together.",
+    extension: "Generally no. Visitors can't switch or extend beyond 6 months except in narrow cases such as private medical treatment.",
+    payment: "Paid online by card on GOV.UK when you apply. Priority services cost extra.",
   },
   us: {
     visaName: "US B1/B2 visitor visa",
@@ -112,6 +124,9 @@ export const GROUP_RULES: Record<VisaGroup, GroupRule> = {
       { label: "Visa appointment wait times", url: "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/global-visa-wait-times.html" },
     ],
     appliesTo: "All African passports need a visa for the US.",
+    money: "There's no fixed amount. The officer judges whether your income, job and family ties mean you'll return. Bring recent bank statements, a job letter and payslips to the interview in case they ask.",
+    extension: "Yes, sometimes: file Form I-539 with USCIS before your permitted stay ends. Approval isn't guaranteed.",
+    payment: "Pay the application fee before booking your interview, using the payment methods listed for your country on the official appointment site.",
   },
   canada: {
     visaName: "Canada visitor visa (temporary resident visa)",
@@ -126,6 +141,9 @@ export const GROUP_RULES: Record<VisaGroup, GroupRule> = {
     ],
     official: [{ label: "Government of Canada: visit Canada", url: "https://www.canada.ca/en/immigration-refugees-citizenship/services/visit-canada.html" }],
     appliesTo: "Most African passports need a visitor visa. Some may qualify for an eTA if they had a Canadian visa in the last 10 years or hold a valid US visa; check eligibility.",
+    money: "Upload recent bank statements, payslips or a job letter showing you can cover your stay. There's no single minimum; show funds that match your trip length and cost.",
+    extension: "Yes: apply online for a visitor record at least 30 days before your status ends.",
+    payment: "Paid online by card through your IRCC account, including the biometrics fee.",
   },
   uae: {
     visaName: "UAE tourist visa or visa on arrival (depends on passport)",
@@ -144,6 +162,9 @@ export const GROUP_RULES: Record<VisaGroup, GroupRule> = {
       { label: "ICP smart services", url: "https://icp.gov.ae/en/" },
     ],
     appliesTo: "Depends strongly on your passport. Check the official portal for yours.",
+    money: "Some visa routes ask for a recent bank statement; airline and hotel sponsors usually ask for less. Have a statement ready just in case.",
+    extension: "Many tourist visas can be extended once inside the UAE for a fee, through ICP or GDRFA. Check the rules for your visa type.",
+    payment: "Paid online by card through the airline, hotel or official ICP/GDRFA portal that issues your visa.",
   },
 };
 

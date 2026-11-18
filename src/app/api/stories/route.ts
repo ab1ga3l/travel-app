@@ -1,11 +1,12 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { supabase } from "@/lib/supabase";
-import { DESTINATIONS, DOCUMENT_KEYS, PASSPORTS } from "@/lib/visa";
+import { admin } from "@/lib/stories";
+import { DOCUMENT_KEYS } from "@/lib/visa";
 
+const iso = z.string().regex(/^[A-Z]{2}$/);
 const Story = z.object({
-  passport: z.string().length(2).refine((c) => PASSPORTS.some((p) => p.code === c)),
-  destination: z.string().length(2).refine((c) => DESTINATIONS.some((d) => d.code === c)),
+  passport: iso,
+  destination: iso,
   visa_type: z.enum(["tourist", "business", "student", "transit", "work"]),
   outcome: z.enum(["approved", "refused", "pending"]),
   applied_at: z.string().max(80).optional().default(""),
@@ -14,25 +15,21 @@ const Story = z.object({
   documents: z.array(z.enum(DOCUMENT_KEYS)).max(12).default([]),
   refusal_reason: z.string().max(500).optional().default(""),
   advice: z.string().max(1000).optional().default(""),
-  website: z.string().max(0).optional(), // honeypot: bots fill it, people don't see it
+  website: z.string().max(0).optional(), // honeypot: bots fill it, people never see it
 });
 
 export async function POST(req: Request) {
-  if (!supabase) {
-    return NextResponse.json({ error: "Story sharing isn't switched on yet." }, { status: 503 });
-  }
+  if (!admin) return NextResponse.json({ error: "Story sharing switches on when the database is connected." }, { status: 503 });
   const parsed = Story.safeParse(await req.json().catch(() => null));
-  if (!parsed.success) {
-    return NextResponse.json({ error: "Please check the form and try again." }, { status: 400 });
-  }
+  if (!parsed.success) return NextResponse.json({ error: "Please check the form and try again." }, { status: 400 });
   const { website, ...s } = parsed.data;
   void website;
-  const { error } = await supabase.from("visa_stories").insert({
+  const { error } = await admin.from("visa_stories").insert({
     ...s,
     applied_at: s.applied_at || null,
     refusal_reason: s.outcome === "refused" ? s.refusal_reason || null : null,
     advice: s.advice || null,
-    approved_for_display: false, // reviewed before it appears publicly
+    approved_for_display: false,
   });
   if (error) {
     console.error("insert story", error.message);

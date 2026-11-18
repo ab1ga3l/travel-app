@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
-import { supabase } from "@/lib/supabase";
+import { admin as supabase } from "@/lib/stories";
 
 const Body = z.object({ email: z.string().email().max(200), passport: z.string().length(2).optional() });
 
