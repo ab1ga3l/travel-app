@@ -239,3 +239,43 @@ textarea { min-height: 100px; resize: vertical; }
 @media (min-width: 901px) { .toast { bottom: 28px; } }
 .fade-in { animation: fadeIn 0.35s ease both; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+/* ---------- onboarding (full-screen) ---------- */
+.bare { min-height: 100dvh; display: grid; place-items: start center; padding: calc(20px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
+.onb { width: 100%; max-width: 560px; display: grid; gap: 22px; }
+.slide-art { position: relative; border-radius: 28px; border: 1px solid var(--line); min-height: 300px; overflow: hidden; display: grid; place-items: center; padding: 20px; background: radial-gradient(500px 260px at 70% 0%, rgba(255, 107, 74, 0.35), transparent 70%), radial-gradient(400px 260px at 0% 100%, rgba(91, 108, 240, 0.35), transparent 70%), var(--surface); isolation: isolate; }
+.slide-art .motif { position: absolute; inset: 0; z-index: -1; opacity: 0.5; }
+.dots { display: flex; gap: 6px; justify-content: center; }
+.dots i { width: 8px; height: 8px; border-radius: 99px; background: var(--line); transition: width 0.2s, background 0.2s; }
+.dots i[data-on="true"] { width: 26px; background: var(--grad-sun); }
+.mock { width: min(100%, 340px); background: var(--bg-2); border: 1px solid var(--line); border-radius: 20px; padding: 14px; display: grid; gap: 10px; box-shadow: var(--shadow); }
+.otp { letter-spacing: 0.6em; font-family: var(--mono); font-size: 1.4rem; text-align: center; }
+.big-cta { display: grid; gap: 6px; text-align: left; padding: 22px; border-radius: 24px; border: 0; cursor: pointer; background: var(--grad-sun); color: #0b1026; box-shadow: 0 18px 40px -16px rgba(255, 107, 74, 0.8); }
+.big-cta strong { font-family: var(--display); font-size: 1.35rem; }
+.tabs-row { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; scrollbar-width: none; }
+.tabs-row::-webkit-scrollbar { display: none; }
+.tab-pill { flex: 0 0 auto; border: 1px solid var(--line); background: var(--surface); color: var(--muted); padding: 9px 15px; border-radius: 999px; font-weight: 700; font-size: 0.88rem; cursor: pointer; }
+.tab-pill[aria-selected="true"] { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.member { display: flex; align-items: center; gap: 10px; }
+.avatars { display: flex; }
+.avatars .avatar { width: 30px; height: 30px; font-size: 0.7rem; border: 2px solid var(--surface); margin-left: -8px; }
+.avatars .avatar:first-child { margin-left: 0; }
+.stamp-card { display: grid; place-items: center; aspect-ratio: 1; border-radius: 18px; border: 2px dashed currentColor; transform: rotate(var(--rot, -4deg)); padding: 10px; text-align: center; gap: 2px; font-family: var(--mono); font-weight: 600; }
+.stamp-card strong { font-family: var(--display); font-size: 1.5rem; letter-spacing: 0.02em; }
+.badge-tile { display: grid; gap: 4px; justify-items: center; text-align: center; padding: 14px 10px; border-radius: 18px; border: 1px solid var(--line); background: var(--surface); }
+.badge-tile[data-locked="true"] { opacity: 0.4; filter: grayscale(1); }
+.badge-tile .big { font-size: 1.9rem; }
+.bar { height: 10px; border-radius: 99px; background: var(--surface-2); overflow: hidden; }
+.bar i { display: block; height: 100%; border-radius: 99px; }
+.glow { box-shadow: 0 0 0 1px color-mix(in srgb, var(--gold) 35%, transparent), 0 20px 60px -30px color-mix(in srgb, var(--sunrise) 70%, transparent); }
+.linkish { background: none; border: 0; padding: 0; color: var(--gold); font: inherit; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.legend { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.8rem; color: var(--muted); }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 3px; margin-right: 6px; vertical-align: -1px; }
+.list-cols { columns: 3 160px; column-gap: 18px; font-size: 0.88rem; }
+.list-cols a { display: block; padding: 3px 0; break-inside: avoid; }
+@media (max-width: 720px) {
+  .grid-3.kpis { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .grid-2.kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .kpis .kpi strong { font-size: 1.25rem !important; }
+  .kpis .card { padding: 14px; }
+}

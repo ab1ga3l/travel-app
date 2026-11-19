@@ -25,6 +25,8 @@ const Body = z.object({
   profile: z.object({
     name: z.string().max(40).optional(), passport: z.string().regex(/^[A-Z]{2}$/), vibes: z.array(z.string().max(20)).max(7).optional(),
     budget: z.string().max(20).optional(), company: z.string().max(20).optional(), pace: z.string().max(20).optional(),
+    home: z.string().regex(/^[A-Z]{2}$/).optional(), interests: z.array(z.string().max(20)).max(12).optional(),
+    assistantStyle: z.enum(["warm", "direct", "detailed"]).optional(), assistantNickname: z.string().max(20).optional(),
   }).optional(),
 });
 

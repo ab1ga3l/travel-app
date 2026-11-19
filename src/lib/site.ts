@@ -35,3 +35,52 @@ export const VIBES = [
 ] as const;
 export type Vibe = (typeof VIBES)[number]["id"];
 export const vibeInfo = (v: string) => VIBES.find((x) => x.id === v) ?? VIBES[0];
+
+export const INTERESTS = [
+  { id: "festivals", label: "Festivals & events", emoji: "🎉" },
+  { id: "tech", label: "Tech & nomad life", emoji: "💻" },
+  { id: "crypto", label: "Crypto-friendly travel", emoji: "₿" },
+  { id: "sports", label: "Sports trips", emoji: "⚽" },
+  { id: "faith", label: "Faith & pilgrimage", emoji: "🕌" },
+  { id: "foodie", label: "Foodie", emoji: "🍲" },
+  { id: "wellness", label: "Wellness", emoji: "🧘🏾" },
+  { id: "family", label: "Travelling with kids", emoji: "👨‍👩‍👧" },
+  { id: "access", label: "Accessibility", emoji: "♿" },
+  { id: "firsttime", label: "First trip abroad", emoji: "✈️" },
+] as const;
+export type Interest = (typeof INTERESTS)[number]["id"];
+
+export const OCCASIONS = [
+  { id: "none", label: "Just because", emoji: "🌍" },
+  { id: "birthday", label: "Birthday", emoji: "🎂" },
+  { id: "honeymoon", label: "Honeymoon", emoji: "💍" },
+  { id: "proposal", label: "Proposal", emoji: "💐" },
+  { id: "wedding", label: "Destination wedding", emoji: "👰🏾" },
+  { id: "anniversary", label: "Anniversary", emoji: "🥂" },
+  { id: "bachelor", label: "Bachelorette / bachelor", emoji: "🎊" },
+  { id: "graduation", label: "Graduation trip", emoji: "🎓" },
+  { id: "festival", label: "Festival or concert", emoji: "🎶" },
+  { id: "sport", label: "Match or race", emoji: "🏟️" },
+  { id: "work", label: "Conference or workation", emoji: "💼" },
+] as const;
+export type Occasion = (typeof OCCASIONS)[number]["id"];
+
+/** Countries that suit each special occasion (from the in-app guides). */
+export const OCCASION_PICKS: Partial<Record<Occasion, { countries: string[]; tip: string }>> = {
+  honeymoon: { countries: ["MU", "TZ", "ID", "CV", "GR", "MA", "LK"], tip: "Book a room with a view and one 'wow' experience: a private dhow, a desert camp or a sunset sail." },
+  proposal: { countries: ["GR", "MA", "ZA", "PT", "TZ", "IT"], tip: "Pick golden hour at a viewpoint, book a photographer, and have a rainy-day plan B." },
+  wedding: { countries: ["MU", "ZA", "MA", "PT", "KE", "GR", "TZ"], tip: "Check legal requirements for marrying abroad early; many couples do the legal part at home." },
+  birthday: { countries: ["NG", "GH", "ZA", "AE", "ES", "TH"], tip: "Plan one big night and one recovery day. Reserve tables early in December." },
+  anniversary: { countries: ["MU", "PT", "IT", "MA", "JP", "ZA"], tip: "Recreate a first-date moment somewhere new." },
+  bachelor: { countries: ["ZA", "ES", "GH", "AE", "TH", "NG"], tip: "Use the group pot early and vote on the big activities." },
+  graduation: { countries: ["TH", "ID", "VN", "MA", "ZA", "KE"], tip: "Stretch the budget with hostels and street food; save for one splurge." },
+  festival: { countries: ["GH", "NG", "PT", "ZA", "TZ"], tip: "Flights and stays sell out: book as soon as dates are announced." },
+  work: { countries: ["KE", "RW", "PT", "AE", "SG", "ZA"], tip: "Check business-visa rules; some tourist visas don't allow conferences." },
+};
+
+export const ASSISTANT_STYLES = [
+  { id: "warm", label: "Warm & fun", emoji: "💖", hint: "Friendly, hyped, a few emojis" },
+  { id: "direct", label: "Straight to the point", emoji: "⚡", hint: "Short answers, no fluff" },
+  { id: "detailed", label: "Detailed", emoji: "📚", hint: "Full explanations and steps" },
+] as const;
+export type AssistantStyle = (typeof ASSISTANT_STYLES)[number]["id"];

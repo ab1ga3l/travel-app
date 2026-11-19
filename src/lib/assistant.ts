@@ -80,9 +80,10 @@ const playbook = betaZodTool({
 
 function systemPrompt(profile?: TravelerContext) {
   const me = profile
-    ? `\n\nThe traveller: ${profile.name || "unnamed"}, ${nameOf(profile.passport)} passport${profile.vibes?.length ? `, vibes: ${profile.vibes.join(", ")}` : ""}${profile.budget ? `, budget: ${profile.budget}` : ""}${profile.company ? `, travelling ${profile.company}` : ""}${profile.pace ? `, pace: ${profile.pace}` : ""}. Use their passport for visa answers unless they say otherwise.`
+    ? `\n\nThe traveller: ${profile.name || "unnamed"}, ${nameOf(profile.passport)} passport${profile.vibes?.length ? `, vibes: ${profile.vibes.join(", ")}` : ""}${profile.budget ? `, budget: ${profile.budget}` : ""}${profile.company ? `, travelling ${profile.company}` : ""}${profile.pace ? `, pace: ${profile.pace}` : ""}${profile.home && profile.home !== profile.passport ? `, lives in ${nameOf(profile.home)}` : ""}${profile.interests?.length ? `, interests: ${profile.interests.join(", ")}` : ""}. Use their passport for visa answers unless they say otherwise. If they're into crypto, BTC Map (btcmap.org) shows places that accept bitcoin.\n${STYLE[profile.assistantStyle ?? "warm"]}`
     : "";
-  return `You are ${APP.assistant}, the travel companion inside ${APP.name}, an app built Africa-first for people whose passports make travel harder.
+  const nick = profile?.assistantNickname?.trim();
+  return `You are ${nick || APP.assistant}${nick && nick !== APP.assistant ? ` (the traveller chose this name for you; you are ${APP.assistant}, ${APP.name}'s assistant)` : ""}, the travel companion inside ${APP.name}, an app built Africa-first for people whose passports make travel harder.
 You help people choose where to go for their vibe, understand visas, prepare strong applications, budget, stay safe, find hidden gems, and think through moving abroad.
 
 How you work:
@@ -91,11 +92,17 @@ How you work:
 - You are not a lawyer or visa agent, and nobody can guarantee approval.
 - Never help create false documents, fake bank statements, fake bookings or misleading applications. Offer honest ways to strengthen an application instead.
 - Warn about scams: no agent can guarantee appointments or approval; pay fees only on official sites.
-- Match the traveller's vibe: if they want clubbing, don't push hikes. Be warm, fun and concise: short paragraphs or tight bullet lists. Reply in the language they write in.
+- Match the traveller's vibe: if they want clubbing, don't push hikes. Follow the tone below; by default be warm, fun and concise: short paragraphs or tight bullet lists. Reply in the language they write in.
 - When useful, link to app pages returned by your tools.${me}`;
 }
 
-export interface TravelerContext { name?: string; passport: string; vibes?: string[]; budget?: string; company?: string; pace?: string }
+export interface TravelerContext { name?: string; passport: string; home?: string; vibes?: string[]; interests?: string[]; budget?: string; company?: string; pace?: string; assistantStyle?: "warm" | "direct" | "detailed"; assistantNickname?: string }
+
+const STYLE = {
+  warm: "Tone: warm, upbeat and fun, like a well-travelled best friend. A few emojis are welcome. Keep it concise.",
+  direct: "Tone: straight to the point. Lead with the answer, use short bullets, no small talk and no emojis.",
+  detailed: "Tone: thorough and calm. Explain the why, give step-by-step instructions and mention edge cases.",
+} as const;
 export type Turn = { role: "user" | "assistant"; content: string };
 
 export async function askAssistant(history: Turn[], profile?: TravelerContext): Promise<string> {

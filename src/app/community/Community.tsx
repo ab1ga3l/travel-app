@@ -32,6 +32,13 @@ export function Community() {
   const [msg, setMsg] = useState("");
   const [open, setOpen] = useState<string | null>(null);
   const [reply, setReply] = useState("");
+  const [been, setBeen] = useState<Record<string, string[]>>({});
+  const [guides, setGuides] = useState<{ display_name: string; home_country: string | null }[]>([]);
+  useEffect(() => {
+    if (!client || !country) { setGuides([]); return; }
+    client.from("public_profiles").select("display_name,home_country").eq("is_public", true).contains("been", [country]).limit(12)
+      .then(({ data }) => setGuides((data ?? []) as { display_name: string; home_country: string | null }[]));
+  }, [client, country]);
 
   const load = useCallback(async () => {
     if (!client) return setPosts([]);
@@ -40,7 +47,13 @@ export function Community() {
     if (country) q = q.eq("country", country);
     const { data, error } = await q;
     if (error) console.error(error.message);
-    setPosts((data ?? []) as Post[]);
+    const list = (data ?? []) as Post[];
+    setPosts(list);
+    const ids = Array.from(new Set(list.map((p) => p.user_id)));
+    if (ids.length) {
+      const { data: pp } = await client.from("public_profiles").select("user_id,been").eq("is_public", true).in("user_id", ids);
+      setBeen(Object.fromEntries(((pp ?? []) as { user_id: string; been: string[] | null }[]).map((r) => [r.user_id, r.been ?? []])));
+    }
   }, [client, topic, country]);
   useEffect(() => { load(); }, [load]);
 
@@ -98,7 +111,17 @@ export function Community() {
               <div className="row"><button type="button" className="btn btn-sun" onClick={post}>Post</button><span role="status" className="muted">{msg}</span></div>
             </div>
           ) : (
-            <div className="card row" style={{ justifyContent: "space-between" }}><span>Sign in to post and reply.</span><Link href="/profile" className="btn btn-soft btn-sm">Sign in</Link></div>
+            <div className="card row" style={{ justifyContent: "space-between" }}><span>Sign in to post and reply.</span><Link href="/auth?next=/community" className="btn btn-soft btn-sm">Sign in</Link></div>
+          )}
+
+          {country && (
+            <section className="card" style={{ gap: 8 }}>
+              <h3>🧭 People who&apos;ve been to {nameOf(country)}</h3>
+              {guides.length ? (
+                <div className="chips">{guides.map((g, i) => <span key={i} className="badge tone-free">{g.home_country ? flag(g.home_country) : "🌍"} {g.display_name}</span>)}</div>
+              ) : <p className="muted" style={{ fontSize: "0.88rem" }}>No one has shared their map for {nameOf(country)} yet. Been? Turn on your “been there” badge in your profile.</p>}
+              <p className="muted" style={{ fontSize: "0.82rem" }}>Post your question below with {nameOf(country)} selected and they&apos;ll see it.</p>
+            </section>
           )}
 
           {posts === null ? <div className="muted">Loading…</div> : posts.length === 0 ? (
@@ -113,6 +136,9 @@ export function Community() {
                     <div className="stack" style={{ gap: 8 }}>
                       <div className="row" style={{ gap: 8 }}>
                         <strong>{p.author_name}</strong>
+                        {been[p.user_id] && (p.country && been[p.user_id].includes(p.country)
+                          ? <span className="badge tone-free" title="This traveller has been here">🧭 Been to {nameOf(p.country)}</span>
+                          : been[p.user_id].length > 0 && <span className="badge tone-free">🌍 {been[p.user_id].length} countries</span>)}
                         <span className="badge tone-lilac">{topicLabel(p.topic)}</span>
                         {p.country && <span className="badge tone-unknown">{flag(p.country)} {nameOf(p.country)}</span>}
                         <span className="muted" style={{ fontSize: "0.78rem" }}>{p.created_at.slice(0, 10)}</span>

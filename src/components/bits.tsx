@@ -15,7 +15,7 @@ export function MatchRing({ value, label = "match" }: { value: number; label?: s
 export function VisaBadgeFor({ code, compact = false }: { code: string; compact?: boolean }) {
   const { profile } = useApp();
   const row = useVisaRow(profile?.passport);
-  if (!profile) return compact ? null : <Link href="/start" className="badge tone-unknown">Set your passport</Link>;
+  if (!profile) return compact ? null : <Link href="/setup" className="badge tone-unknown">Set your passport</Link>;
   if (!row) return <span className="badge tone-unknown">Checking…</span>;
   if (code === profile.passport) return <span className="badge tone-free">Home</span>;
   const v = visaLabel(row[code] as VisaCode | undefined);

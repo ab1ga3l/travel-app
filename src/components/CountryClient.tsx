@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import type { Thing } from "@/lib/countryExtras";
 import { VIBES, vibeInfo, type Vibe } from "@/lib/site";
-import { newId, useApp, useVisaRow, type TripStatus } from "@/lib/store";
+import { newId, useApp, useVisaRow, type PlaceStatus } from "@/lib/store";
 import { flag, nameOf, visaLabel, type VisaCode } from "@/lib/world";
 
 export function VisaPanel({ code, covered }: { code: string; covered: boolean }) {
@@ -15,7 +15,7 @@ export function VisaPanel({ code, covered }: { code: string; covered: boolean })
         <span className="eyebrow">Getting in</span>
         <h3>Can you go visa-free?</h3>
         <p className="muted">Tell us your passport and we&apos;ll show your exact entry rule here.</p>
-        <Link href="/start" className="btn btn-sun" style={{ justifySelf: "start" }}>Set my passport</Link>
+        <Link href="/setup" className="btn btn-sun" style={{ justifySelf: "start" }}>Set my passport</Link>
       </div>
     );
   }
@@ -43,15 +43,15 @@ export function VisaPanel({ code, covered }: { code: string; covered: boolean })
 }
 
 export function TripButtons({ code }: { code: string }) {
-  const { trips, upsertTrip, removeTrip } = useApp();
-  const existing = trips.find((t) => t.country === code);
-  const set = (status: TripStatus) => {
-    if (existing?.status === status) return removeTrip(existing.id);
-    upsertTrip({ id: existing?.id ?? newId(), country: code, status, start: existing?.start, end: existing?.end });
+  const { places, upsertPlace, removePlace } = useApp();
+  const existing = places.find((t) => t.country === code);
+  const set = (status: PlaceStatus) => {
+    if (existing?.status === status) return removePlace(existing.id);
+    upsertPlace({ id: existing?.id ?? newId(), country: code, status, start: existing?.start, end: existing?.end });
   };
-  const opts: [TripStatus, string][] = [["been", "✅ Been"], ["going", "🧳 Going"], ["dream", "💭 Dream"]];
+  const opts: [PlaceStatus, string][] = [["been", "✅ Been"], ["going", "🧳 Going"], ["dream", "💭 Dream"]];
   return (
-    <div className="row" role="group" aria-label="Add to my trips">
+    <div className="row" role="group" aria-label="Add to my map">
       {opts.map(([s, l]) => (
         <button key={s} type="button" className="chip" aria-pressed={existing?.status === s} onClick={() => set(s)}>{l}</button>
       ))}
