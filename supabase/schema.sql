@@ -1,4 +1,4 @@
--- Aviora database. Run this once in the Supabase SQL editor.
+-- Tokende database. Run this once in the Supabase SQL editor.
 -- Then turn on Email sign-in (Authentication → Providers → Email, "magic link").
 
 -- ---------- Traveller profiles and trips (private to each user) ----------

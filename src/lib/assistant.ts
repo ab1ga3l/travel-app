@@ -1,5 +1,5 @@
 import "server-only";
-// Wazi ("open, clear" in Swahili): the in-app travel assistant, on the Claude API with the SDK tool runner.
+// Aviora: the in-app travel assistant, on the Claude API with the SDK tool runner.
 // Its tools read the app's own data, and live web search lets it check official sources for the latest rules.
 import Anthropic from "@anthropic-ai/sdk";
 import { betaZodTool } from "@anthropic-ai/sdk/helpers/beta/zod";
@@ -98,7 +98,7 @@ How you work:
 export interface TravelerContext { name?: string; passport: string; vibes?: string[]; budget?: string; company?: string; pace?: string }
 export type Turn = { role: "user" | "assistant"; content: string };
 
-export async function askWazi(history: Turn[], profile?: TravelerContext): Promise<string> {
+export async function askAssistant(history: Turn[], profile?: TravelerContext): Promise<string> {
   const client = new Anthropic();
   const final = await client.beta.messages.toolRunner({
     model: "claude-opus-5-5",

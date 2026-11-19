@@ -7,7 +7,7 @@ import { nameOf } from "@/lib/world";
 
 type Turn = { role: "user" | "assistant"; content: string };
 
-export function WaziChat() {
+export function AssistantChat() {
   const sp = useSearchParams();
   const { profile } = useApp();
   const [turns, setTurns] = useState<Turn[]>([]);

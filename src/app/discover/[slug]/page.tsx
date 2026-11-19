@@ -42,7 +42,7 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
           </div>
         } />
 
-      <div className="between"><TripButtons code={c.code} /><Link href={`/wazi?q=${encodeURIComponent(`Plan a trip to ${c.name} for my vibe`)}`} className="btn btn-ghost btn-sm">✨ Ask {APP.assistant} about {c.name}</Link></div>
+      <div className="between"><TripButtons code={c.code} /><Link href={`/ask?q=${encodeURIComponent(`Plan a trip to ${c.name} for my vibe`)}`} className="btn btn-ghost btn-sm">✨ Ask {APP.assistant} about {c.name}</Link></div>
 
       <div className="split">
         <div className="stack-lg">

@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { APP } from "@/lib/site";
 
-// Lets people "Add to Home Screen" and use Aviora like an app.
+// Lets people "Add to Home Screen" and use Tokende like an app.
 export default function manifest(): MetadataRoute.Manifest {
   return {
     name: APP.name,

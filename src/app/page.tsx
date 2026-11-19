@@ -83,7 +83,7 @@ export default function Home() {
               <div className="card card-soft kpi"><strong className="gradient-text">{easyCount ?? "…"}</strong><span>countries visa-free or visa on arrival with your {nameOf(profile.passport)} passport</span></div>
               <div className="card card-soft kpi"><strong style={{ color: "var(--gold)" }}>{onlineCount ?? "…"}</strong><span>more with an eVisa or online authorisation</span></div>
               <Link href="/trips" className="card card-soft kpi hover-lift"><strong style={{ color: "var(--mint)" }}>{trips.filter((t) => t.status === "been").length}</strong><span>countries you&apos;ve been to →</span></Link>
-              <Link href="/wazi" className="card card-soft kpi hover-lift"><strong>✨</strong><span>Ask {APP.assistant} anything about your next trip →</span></Link>
+              <Link href="/ask" className="card card-soft kpi hover-lift"><strong>✨</strong><span>Ask {APP.assistant} anything about your next trip →</span></Link>
             </div>
           </div>
         </section>

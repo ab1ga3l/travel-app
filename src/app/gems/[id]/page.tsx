@@ -52,7 +52,7 @@ export default async function GemPage({ params }: { params: Promise<{ id: string
             </div>
           </div>
           <div className="card"><span className="eyebrow">Add {nameOf(g.c)} to your trips</span><TripButtons code={g.c} /></div>
-          <Link href={`/wazi?q=${encodeURIComponent(`How do I get to ${g.name} in ${g.area}, ${nameOf(g.c)}, and is it worth it for my vibe?`)}`} className="btn btn-ghost">✨ Ask {APP.assistant} how to get there</Link>
+          <Link href={`/ask?q=${encodeURIComponent(`How do I get to ${g.name} in ${g.area}, ${nameOf(g.c)}, and is it worth it for my vibe?`)}`} className="btn btn-ghost">✨ Ask {APP.assistant} how to get there</Link>
         </aside>
       </div>
       {more.length > 0 && (

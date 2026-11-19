@@ -1,6 +1,6 @@
-# Aviora
+# Tokende
 
-*The app name lives in `src/lib/site.ts`.*
+*Working name for the app ("Let's go!" in Lingala); change it in `src/lib/site.ts`. The AI assistant is called **Aviora**.*
 
 A travel app built Africa-first: know before you go, then go.
 
@@ -11,7 +11,7 @@ A travel app built Africa-first: know before you go, then go.
 - **Visa centre:** an entry rule for **every passport and every country**, from the open Passport Index dataset (Feb 2026). For Schengen, the UK, the US, Canada and the UAE it adds documents, bank statements, fees, how to pay, processing, extensions and official links. Community visa stories show approval rates, waits and costs.
 - **My trips:** a world map of where you've been, are going and dream of, plus trip cards linked to visa checklists.
 - **Community:** posts and replies by topic and country, with source links to TikTok, Instagram, X or blogs.
-- **Wazi** ("open, clear" in Swahili): an AI assistant on Claude that knows your passport and vibe, uses the app's data, and checks official sites with live web search.
+- **Aviora**, the AI assistant, runs on Claude: it knows your passport and vibe, uses the app's data, and checks official sites with live web search.
 - **Deals and partners:** affiliate and partner slots so the app stays free.
 - **Installable:** add it to your home screen like an app. Ready to wrap for the app stores later.
 
@@ -25,7 +25,7 @@ npm run dev                  # http://localhost:3000
 ## Turn features on
 | Feature | What to add |
 |---|---|
-| Wazi | `ANTHROPIC_API_KEY` |
+| Aviora | `ANTHROPIC_API_KEY` |
 | Accounts, trip sync, community, verdicts | Supabase project + run `supabase/schema.sql` + `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`; enable Email (magic link) sign-in |
 | Visa stories, newsletter | `SUPABASE_SERVICE_ROLE_KEY` (server only). Approve stories by setting `approved_for_display = true` |
 | Deals | Your partner links (`NEXT_PUBLIC_AFF_*`) |
@@ -41,12 +41,12 @@ Import the repo on [vercel.com/new](https://vercel.com/new), add the same enviro
 | `src/lib/gems.ts` | Hidden gems and their "feel" profile |
 | `src/lib/visa.ts` | Curated visa rules (review every quarter) |
 | `src/data/visa-matrix.json` | Entry rules for 199 passports (refresh from github.com/imorte/passport-index-data) |
-| `src/lib/wazi.ts` | The AI assistant: prompt and tools |
+| `src/lib/assistant.ts` | The AI assistant: prompt and tools |
 | `src/lib/soundscape.ts`, `src/components/FeelIt.tsx` | Feel it: generated sound and scenes |
 | `docs/` | Design system, business plan, image guide |
 
 ## Before launch
 - Have a lawyer review `/legal`.
-- Move Wazi's daily limit to a shared store (Supabase or Upstash).
+- Move Aviora's daily limit to a shared store (Supabase or Upstash).
 - Re-check fees and rules in `src/lib/visa.ts` against the official links.
 - Agree the final name and update `APP.name`.

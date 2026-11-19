@@ -1,7 +1,7 @@
 # Design: "Adire Night"
 
 ## The idea
-Aviora should feel like the moment before a trip: the night sky before an early flight, the sun coming up on the way to the airport. It's built Africa-first, so the palette comes from **adire**, the indigo resist-dyed cloth of West Africa, and from the **harmattan sunrise**.
+Tokende should feel like the moment before a trip: the night sky before an early flight, the sun coming up on the way to the airport. It's built Africa-first, so the palette comes from **adire**, the indigo resist-dyed cloth of West Africa, and from the **harmattan sunrise**.
 
 ## Colors
 
@@ -28,7 +28,7 @@ Colors always mean the same thing. Mint is always "good", gold is always "some e
 - Real photos from travellers can come later through the community. See `IMAGES.md`.
 
 ## Layout
-- **App-first:** on phones, a bottom tab bar (Home, Discover, Visa, My trips, Community) and a top bar with Wazi; on desktop, a side menu.
+- **App-first:** on phones, a bottom tab bar (Home, Discover, Visa, My trips, Community) and a top bar with Aviora; on desktop, a side menu.
 - **Installable:** `manifest.webmanifest` lets people add it to their home screen like an app. The same code can later be wrapped for the App Store and Google Play (for example with Capacitor), or rebuilt in React Native.
 - **One job per screen.** Personal info comes first: your passport's visa status, your vibe match, your trips.
 - **Facts always carry a date and a source.**

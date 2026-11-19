@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { z } from "zod";
-import { askWazi } from "@/lib/wazi";
+import { askAssistant } from "@/lib/assistant";
 import { APP } from "@/lib/site";
 
 export const runtime = "nodejs";
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
   if (!allow(ip)) return NextResponse.json({ error: `That's today's ${LIMIT} free questions. Come back tomorrow!` }, { status: 429 });
 
   try {
-    const reply = await askWazi(history, parsed.data.profile);
+    const reply = await askAssistant(history, parsed.data.profile);
     return NextResponse.json({ reply });
   } catch (e) {
     if (e instanceof Anthropic.RateLimitError) return NextResponse.json({ error: "Lots of travellers are asking right now. Try again in a minute." }, { status: 429 });

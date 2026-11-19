@@ -12,7 +12,7 @@ const NAV = [
   { href: "/community", label: "Community", ico: "💬" },
 ];
 const MORE = [
-  { href: "/wazi", label: `Ask ${APP.assistant}`, ico: "✨" },
+  { href: "/ask", label: `Ask ${APP.assistant}`, ico: "✨" },
   { href: "/deals", label: "Deals", ico: "🎟️" },
   { href: "/profile", label: "Profile", ico: "👤" },
 ];
@@ -25,7 +25,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div className="shell">
       <aside className="rail" aria-label="Main navigation">
-        <Link href="/" className="logo"><span className="logo-mark">AV</span>{APP.name}</Link>
+        <Link href="/" className="logo"><span className="logo-mark">TK</span>{APP.name}</Link>
         {[...NAV, ...MORE].map((n) => (
           <Link key={n.href} href={n.href} className="nav-link" aria-current={active(path, n.href) ? "page" : undefined}>
             <span className="ico" aria-hidden="true">{n.ico}</span>{n.label}
@@ -45,10 +45,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </aside>
 
       <header className="topbar">
-        <Link href="/" className="logo" style={{ padding: 0 }}><span className="logo-mark">AV</span>{APP.name}</Link>
+        <Link href="/" className="logo" style={{ padding: 0 }}><span className="logo-mark">TK</span>{APP.name}</Link>
         <div className="row" style={{ gap: 8 }}>
           <Link href="/deals" className="btn btn-ghost btn-sm" aria-label="Deals">🎟️</Link>
-          <Link href="/wazi" className="btn btn-sun btn-sm">✨ {APP.assistant}</Link>
+          <Link href="/ask" className="btn btn-sun btn-sm">✨ {APP.assistant}</Link>
           <Link href="/profile" className="btn btn-ghost btn-sm" aria-label="Profile">👤</Link>
         </div>
       </header>

@@ -71,7 +71,7 @@ export default async function VisaRoute({ params }: { params: Promise<{ from: st
             <span className="muted" style={{ fontSize: "0.85rem" }}>Entry rule from the {VISA_SOURCE.name} ({VISA_SOURCE.updated}){rule ? ` · details checked ${AS_OF}` : ""}</span>
           </div>
           <div className="row">
-            <Link href={`/wazi?q=${liveQ}`} className="btn btn-sun">✨ Ask {APP.assistant} to check the latest</Link>
+            <Link href={`/ask?q=${liveQ}`} className="btn btn-sun">✨ Ask {APP.assistant} to check the latest</Link>
             {guide && <Link href={`/discover/${guide.slug}`} className="btn btn-ghost">{nameOf(D)} travel guide</Link>}
           </div>
         </div>
