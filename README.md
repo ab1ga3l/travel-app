@@ -1,6 +1,6 @@
-# Tokende
+# Aviora
 
-*"Let's go!" in Lingala. Working name: change it in `src/lib/site.ts`.*
+*The app name lives in `src/lib/site.ts`.*
 
 A travel app built Africa-first: know before you go, then go.
 

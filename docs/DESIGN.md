@@ -1,7 +1,7 @@
 # Design: "Adire Night"
 
 ## The idea
-Tokende should feel like the moment before a trip: the night sky before an early flight, the sun coming up on the way to the airport. It's built Africa-first, so the palette comes from **adire**, the indigo resist-dyed cloth of West Africa, and from the **harmattan sunrise**.
+Aviora should feel like the moment before a trip: the night sky before an early flight, the sun coming up on the way to the airport. It's built Africa-first, so the palette comes from **adire**, the indigo resist-dyed cloth of West Africa, and from the **harmattan sunrise**.
 
 ## Colors
 

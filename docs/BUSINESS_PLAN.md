@@ -1,4 +1,4 @@
-# Tokende: business plan (free for travellers)
+# Aviora: business plan (free for travellers)
 
 ## Why it can win
 - **Visas are the hidden first step for African travellers.** In 2025 about 48% of Nigerian, 47% of Ghanaian and 52% of Senegalese Schengen applications were refused, and Africans paid 42% of the fees lost to refusals (LAGO Collective, European Commission data).

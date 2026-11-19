@@ -1,9 +1,9 @@
-// App-wide settings. "Tokende" is a working name: change it here and it updates everywhere.
+// App-wide settings. Change the name here and it updates everywhere.
 // Partner links come from environment variables so you can swap partners without code changes.
 
 export const APP = {
-  name: "Tokende",
-  meaning: "Lingala for “Let's go!”",
+  name: "Aviora",
+  meaning: "Travel the world, your way",
   tagline: "Know before you go. Then go.",
   url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000",
   assistant: "Wazi",
