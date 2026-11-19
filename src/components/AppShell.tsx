@@ -42,8 +42,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!ready || profile?.onboarded || !isPersonal) return;
     const q = path === "/" ? "" : `?next=${encodeURIComponent(path)}`;
-    if (!seenIntro) router.replace(`/welcome${q}`);
-    else if (!session && !guest) router.replace(`/auth${q}`);
+    if (!session && !guest) router.replace(`/auth${q}`);
+    else if (!seenIntro) router.replace(`/welcome${q}`);
     else router.replace(`/setup${q}`);
   }, [ready, profile?.onboarded, seenIntro, session, guest, path, router, isPersonal]);
 

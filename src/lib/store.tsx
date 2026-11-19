@@ -17,6 +17,7 @@ export interface Profile {
   currency?: string;
   vibes: Vibe[];
   interests?: Interest[];
+  picks?: string[]; // what they chose on "What's your vibe?" (vibes + interests are derived from these)
   budget: "backpacker" | "comfy" | "treat";
   company: "solo" | "couple" | "friends" | "family";
   pace: "slow" | "balanced" | "packed";

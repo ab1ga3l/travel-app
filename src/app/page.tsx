@@ -12,7 +12,7 @@ import { EVENTS } from "@/lib/events";
 import { GEMS } from "@/lib/gems";
 import { tagsFor } from "@/lib/interestTags";
 import { matchScore } from "@/lib/match";
-import { APP, vibeInfo } from "@/lib/site";
+import { APP, pickInfo } from "@/lib/site";
 import { useApp, useVisaRow } from "@/lib/store";
 import { tripPhase } from "@/lib/tripTypes";
 import { flag, nameOf, visaLabel, VISA_SOURCE, type VisaCode } from "@/lib/world";
@@ -85,7 +85,7 @@ export default function Home() {
             <span className="eyebrow">Hey {profile.name || "traveller"} {flag(profile.passport)}</span>
             <h1>Where are we <span className="gradient-text">going next?</span></h1>
             <div className="chips">
-              {profile.vibes.map((v) => <span key={v} className="badge tone-lilac">{vibeInfo(v).emoji} {vibeInfo(v).label}</span>)}
+              {(profile.picks ?? profile.vibes).slice(0, 5).map((v) => <span key={v} className="badge tone-lilac">{pickInfo(v).emoji} {pickInfo(v).label}</span>)}
               <Link href="/profile" className="badge tone-unknown">Edit</Link>
             </div>
             <div className="row">

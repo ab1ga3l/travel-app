@@ -26,7 +26,7 @@ function Auth() {
   const [sent, setSent] = useState(false);
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
-  const go = () => router.push(`/setup${next ? `?next=${encodeURIComponent(next)}` : ""}${next ? "&" : "?"}from=${country}`);
+  const go = () => router.push(`/welcome?from=${country}${next ? `&next=${encodeURIComponent(next)}` : ""}`);
 
   useEffect(() => { if (session) go(); }, [session]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -52,7 +52,7 @@ function Auth() {
   };
   const oauth = async (provider: "google" | "apple") => {
     const c = sb(); if (!c) return;
-    const { error } = await c.auth.signInWithOAuth({ provider, options: { redirectTo: `${window.location.origin}/setup?from=${country}` } });
+    const { error } = await c.auth.signInWithOAuth({ provider, options: { redirectTo: `${window.location.origin}/welcome?from=${country}${next ? `&next=${encodeURIComponent(next)}` : ""}` } });
     if (error) setMsg(`${provider === "google" ? "Google" : "Apple"} sign-in isn't switched on yet. Use your phone or email.`);
   };
   const guest = () => { continueAsGuest(); go(); };

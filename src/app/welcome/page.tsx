@@ -86,9 +86,11 @@ const SLIDES = [
 function Welcome() {
   const [i, setI] = useState(0);
   const router = useRouter();
-  const next = useSearchParams().get("next");
+  const sp = useSearchParams();
+  const next = sp.get("next");
+  const from = sp.get("from");
   const { markIntroSeen } = useApp();
-  const finish = () => { markIntroSeen(); router.push(`/auth${next ? `?next=${encodeURIComponent(next)}` : ""}`); };
+  const finish = () => { markIntroSeen(); router.push(`/setup?${new URLSearchParams({ ...(from ? { from } : {}), ...(next ? { next } : {}) }).toString()}`); };
   const s = SLIDES[i];
   return (
     <div className="onb fade-in" key={i}>

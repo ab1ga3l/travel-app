@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { APP, ASSISTANT_STYLES, INTERESTS, vibeInfo, type Interest } from "@/lib/site";
+import { APP, ASSISTANT_STYLES, VIBE_PICKS, fromPicks, picksFrom } from "@/lib/site";
 import { useApp } from "@/lib/store";
 import { cloudEnabled } from "@/lib/supabaseBrowser";
 import { flag, nameOf } from "@/lib/world";
@@ -14,9 +14,10 @@ export default function ProfilePage() {
   if (!ready) return <div className="muted">Loading…</div>;
   if (!profile) return <div className="empty"><strong>No profile yet.</strong><Link href="/setup" className="btn btn-sun">Set up my profile</Link></div>;
 
-  const toggleInterest = (i: Interest) => {
-    const cur = profile.interests ?? [];
-    saveProfile({ ...profile, interests: cur.includes(i) ? cur.filter((x) => x !== i) : [...cur, i] });
+  const picks = profile.picks ?? picksFrom(profile.vibes, profile.interests);
+  const togglePick = (id: string) => {
+    const next = picks.includes(id) ? picks.filter((x) => x !== id) : [...picks, id];
+    if (next.length) saveProfile({ ...profile, picks: next, ...fromPicks(next) });
   };
   const nickname = nick ?? profile.assistantNickname ?? "";
   const user = session?.user;
@@ -34,16 +35,15 @@ export default function ProfilePage() {
           <div className="ledger-row"><span className="muted">Passport</span><span>{flag(profile.passport)} {nameOf(profile.passport)}</span></div>
           {profile.home && profile.home !== profile.passport && <div className="ledger-row"><span className="muted">Lives in</span><span>{flag(profile.home)} {nameOf(profile.home)}</span></div>}
           <div className="ledger-row"><span className="muted">Currency</span><span>{profile.currency ?? "USD"}</span></div>
-          <div className="ledger-row"><span className="muted">Vibe</span><span>{profile.vibes.map((v) => `${vibeInfo(v).emoji} ${vibeInfo(v).label.split(" ")[0]}`).join(", ")}</span></div>
           <div className="ledger-row"><span className="muted">Budget · company · pace</span><span>{profile.budget} · {profile.company} · {profile.pace}</span></div>
           <div className="ledger-row"><span className="muted">Trips · places on map</span><span>{tripDocs.length} · {places.filter((p) => p.status === "been").length} been</span></div>
         </div>
       </section>
 
       <section className="card" style={{ gap: 12 }}>
-        <h2>Your interests</h2>
-        <p className="muted" style={{ fontSize: "0.9rem" }}>We use these to pick events, gems and tips for you.</p>
-        <div className="chips">{INTERESTS.map((i) => <button key={i.id} type="button" className="chip" aria-pressed={profile.interests?.includes(i.id) ?? false} onClick={() => toggleInterest(i.id)}>{i.emoji} {i.label}</button>)}</div>
+        <h2>Your vibe</h2>
+        <p className="muted" style={{ fontSize: "0.9rem" }}>We use these to match places, events, gems and tips to you.</p>
+        <div className="chips">{VIBE_PICKS.map((v) => <button key={v.id} type="button" className="chip" aria-pressed={picks.includes(v.id)} onClick={() => togglePick(v.id)}>{v.emoji} {v.label}</button>)}</div>
       </section>
 
       <section className="card" style={{ gap: 12 }}>

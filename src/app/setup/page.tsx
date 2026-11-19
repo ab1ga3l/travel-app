@@ -1,13 +1,13 @@
 "use client";
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { currencyOf, payMethodsOf } from "@/lib/geo";
-import { APP, ASSISTANT_STYLES, INTERESTS, VIBES, type Interest, type Vibe } from "@/lib/site";
+import { currencyOf } from "@/lib/geo";
+import { APP, ASSISTANT_STYLES, VIBE_PICKS, fromPicks, picksFrom } from "@/lib/site";
 import { useApp, type Profile } from "@/lib/store";
 import { WORLD, flag, nameOf } from "@/lib/world";
 
 const POPULAR = ["KE", "NG", "GH", "ZA", "UG", "TZ", "RW", "ET", "EG", "SN", "CM", "CI", "ZW", "MA", "ZM"];
-const STEPS = ["About you", "Your vibe", "Your interests", "How you travel", "Your assistant"] as const;
+const STEPS = ["About you", "Your vibe", "How you travel", "Your assistant"] as const;
 
 function CountrySelect({ id, value, onChange }: { id: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -25,20 +25,21 @@ function Setup() {
   const [step, setStep] = useState(0);
   const from = sp.get("from")?.toUpperCase();
   const [p, setP] = useState<Profile>({
-    name: "", passport: from && /^[A-Z]{2}$/.test(from) ? from : "KE", vibes: [], interests: [], budget: "comfy", company: "friends", pace: "balanced", assistantStyle: "warm",
+    name: "", passport: from && /^[A-Z]{2}$/.test(from) ? from : "KE", vibes: [], interests: [], picks: [], budget: "comfy", company: "friends", pace: "balanced", assistantStyle: "warm",
   });
   const [diaspora, setDiaspora] = useState(false);
   useEffect(() => {
-    if (profile) { setP({ ...profile, interests: profile.interests ?? [] }); setDiaspora(!!profile.home && profile.home !== profile.passport); }
+    if (profile) { setP({ ...profile, interests: profile.interests ?? [], picks: profile.picks ?? picksFrom(profile.vibes, profile.interests) }); setDiaspora(!!profile.home && profile.home !== profile.passport); }
   }, [profile]);
 
   const home = diaspora ? p.home ?? p.passport : p.passport;
   const currency = p.currency ?? currencyOf(home);
   const toggle = <T extends string>(arr: T[] | undefined, v: T) => ((arr ?? []).includes(v) ? (arr ?? []).filter((x) => x !== v) : [...(arr ?? []), v]);
-  const can = step === 0 ? p.name.trim().length > 0 : step === 1 ? p.vibes.length > 0 : true;
+  const picks = p.picks ?? [];
+  const can = step === 0 ? p.name.trim().length > 0 : step === 1 ? picks.length > 0 : true;
 
   const finish = () => {
-    saveProfile({ ...p, home, currency, onboarded: true, assistantNickname: p.assistantNickname?.trim() || undefined });
+    saveProfile({ ...p, ...fromPicks(picks), home, currency, onboarded: true, assistantNickname: p.assistantNickname?.trim() || undefined });
     const next = sp.get("next");
     router.replace(next && next.startsWith("/") ? next : "/trips/new?first=1");
   };
@@ -64,23 +65,16 @@ function Setup() {
             </div>
             {diaspora && <CountrySelect id="home" value={p.home ?? "GB"} onChange={(v) => setP({ ...p, home: v, currency: undefined })} />}
           </div>
-          <div className="card card-soft" style={{ gap: 6 }}>
-            <span className="lbl">Your money</span>
-            <p>We&apos;ll show prices in <strong>{currency}</strong>. Group pots use {payMethodsOf(home).slice(0, 3).join(", ")}.</p>
-            <select aria-label="Currency" value={currency} onChange={(e) => setP({ ...p, currency: e.target.value })}>
-              {Array.from(new Set([currency, "USD", "EUR", "GBP", "KES", "NGN", "GHS", "ZAR", "UGX", "TZS", "RWF"])).map((c) => <option key={c}>{c}</option>)}
-            </select>
-          </div>
         </section>
       )}
 
       {step === 1 && (
         <section className="stack-lg">
           <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>What&apos;s your <span className="gradient-text">vibe?</span></h1>
-          <p className="muted">Pick as many as you like.</p>
-          <div className="choice-grid">
-            {VIBES.map((v) => (
-              <button key={v.id} type="button" className="choice" aria-pressed={p.vibes.includes(v.id)} onClick={() => setP({ ...p, vibes: toggle<Vibe>(p.vibes, v.id) })}>
+          <p className="muted">Pick everything that sounds like you. The more you pick, the better we can match places to you.</p>
+          <div className="choice-grid tight">
+            {VIBE_PICKS.map((v) => (
+              <button key={v.id} type="button" className="choice" aria-pressed={picks.includes(v.id)} onClick={() => setP({ ...p, picks: toggle(picks, v.id) })}>
                 <span className="big" aria-hidden="true">{v.emoji}</span><strong>{v.label}</strong>
               </button>
             ))}
@@ -90,20 +84,6 @@ function Setup() {
 
       {step === 2 && (
         <section className="stack-lg">
-          <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>What are you <span className="gradient-text">into?</span></h1>
-          <p className="muted">We&apos;ll tailor events, tips and places. Skip if none fit.</p>
-          <div className="choice-grid">
-            {INTERESTS.map((v) => (
-              <button key={v.id} type="button" className="choice" aria-pressed={(p.interests ?? []).includes(v.id)} onClick={() => setP({ ...p, interests: toggle<Interest>(p.interests, v.id) })}>
-                <span className="big" aria-hidden="true">{v.emoji}</span><strong>{v.label}</strong>
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {step === 3 && (
-        <section className="stack-lg">
           <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>How do you <span className="gradient-text">roll?</span></h1>
           <Group label="Budget" value={p.budget} onChange={(v) => setP({ ...p, budget: v as Profile["budget"] })} options={[["backpacker", "🎒", "Backpacker"], ["comfy", "🛋️", "Comfy"], ["treat", "🥂", "Treat myself"]]} />
           <Group label="Usually with" value={p.company} onChange={(v) => setP({ ...p, company: v as Profile["company"] })} options={[["solo", "🧍🏾", "Solo"], ["couple", "💑", "Partner"], ["friends", "👯", "Friends"], ["family", "👨‍👩‍👧", "Family"]]} />
@@ -111,7 +91,7 @@ function Setup() {
         </section>
       )}
 
-      {step === 4 && (
+      {step === 3 && (
         <section className="stack-lg">
           <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>Meet <span className="gradient-text">{p.assistantNickname?.trim() || APP.assistant}</span>, your travel buddy</h1>
           <p className="muted">Ask about visas, budgets, where to go and what to do. How should it talk to you?</p>
@@ -129,7 +109,7 @@ function Setup() {
       <div className="row" style={{ justifyContent: "space-between" }}>
         <button type="button" className="btn btn-ghost" onClick={() => (step ? setStep(step - 1) : router.back())}>Back</button>
         {step < STEPS.length - 1
-          ? <button type="button" className="btn btn-sun" disabled={!can} onClick={() => setStep(step + 1)}>{step === 2 && !(p.interests ?? []).length ? "Skip" : "Continue"}</button>
+          ? <button type="button" className="btn btn-sun" disabled={!can} onClick={() => setStep(step + 1)}>Continue</button>
           : <button type="button" className="btn btn-sun" onClick={finish}>Plan my first trip →</button>}
       </div>
     </div>

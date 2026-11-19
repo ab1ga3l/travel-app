@@ -279,3 +279,8 @@ textarea { min-height: 100px; resize: vertical; }
   .kpis .kpi strong { font-size: 1.25rem !important; }
   .kpis .card { padding: 14px; }
 }
+.choice-grid.tight { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.choice-grid.tight .choice { padding: 12px 6px; justify-items: center; text-align: center; gap: 4px; min-height: 0; }
+.choice-grid.tight .choice .big { font-size: 1.5rem; }
+.choice-grid.tight .choice strong { font-size: 0.78rem; line-height: 1.2; }
+@media (min-width: 720px) { .choice-grid.tight { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
