@@ -3,9 +3,9 @@
 import { flag } from "@/lib/world";
 
 const PALETTES: Record<string, [string, string, string]> = {
-  africa: ["#ff6b4a", "#ffc24b", "#2b1b5a"],
-  asia: ["#3ddbb4", "#5b6cf0", "#0b1a3a"],
-  europe: ["#b79cff", "#5b6cf0", "#1a1240"],
+  africa: ["#ff8a3d", "#ffb23e", "#2a1530"],
+  asia: ["#5ad1c9", "#9d8cff", "#101828"],
+  europe: ["#9d8cff", "#ff5a5f", "#16121f"],
 };
 
 function seed(s: string) {

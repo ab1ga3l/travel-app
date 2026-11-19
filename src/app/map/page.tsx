@@ -170,26 +170,26 @@ async function drawCard(name: string, been: string[], pct: string, conts: number
   if (!g) return null;
   try { await document.fonts.ready; } catch { /* ignore */ }
   const bg = g.createLinearGradient(0, 0, 1080, 1350);
-  bg.addColorStop(0, "#0b1026"); bg.addColorStop(1, "#24133d");
+  bg.addColorStop(0, "#0d0d0f"); bg.addColorStop(1, "#1a1530");
   g.fillStyle = bg; g.fillRect(0, 0, 1080, 1350);
   const sun = g.createRadialGradient(900, 1200, 50, 900, 1200, 700);
-  sun.addColorStop(0, "rgba(255,107,74,0.55)"); sun.addColorStop(1, "rgba(255,107,74,0)");
+  sun.addColorStop(0, "rgba(157,140,255,0.45)"); sun.addColorStop(1, "rgba(157,140,255,0)");
   g.fillStyle = sun; g.fillRect(0, 0, 1080, 1350);
-  g.fillStyle = "#ffc24b"; g.font = "600 34px 'IBM Plex Mono', monospace";
+  g.fillStyle = "#9c9aa3"; g.font = "600 34px 'JetBrains Mono', monospace";
   g.fillText(`${(name || "MY").toUpperCase()}'S TRAVEL MAP`, 80, 140);
   const tg = g.createLinearGradient(80, 0, 700, 0);
-  tg.addColorStop(0, "#ff6b4a"); tg.addColorStop(1, "#ffc24b");
-  g.fillStyle = tg; g.font = "800 260px Unbounded, sans-serif";
+  tg.addColorStop(0, "#c6f24e"); tg.addColorStop(1, "#ddff7a");
+  g.fillStyle = tg; g.font = "800 300px 'Bricolage Grotesque', sans-serif";
   g.fillText(String(been.length), 70, 430);
-  g.fillStyle = "#f4efe6"; g.font = "600 52px 'Instrument Sans', sans-serif";
+  g.fillStyle = "#f4f1ea"; g.font = "600 52px 'DM Sans', sans-serif";
   g.fillText(`countries · ${pct}% of the world`, 80, 510);
   g.fillText(`${conts} continent${conts === 1 ? "" : "s"}`, 80, 580);
   g.font = "64px sans-serif";
   been.slice(0, 40).forEach((c, i) => g.fillText(flag(c), 80 + (i % 10) * 92, 720 + Math.floor(i / 10) * 96));
-  if (been.length > 40) { g.font = "600 40px 'Instrument Sans', sans-serif"; g.fillText(`+${been.length - 40} more`, 80, 1130); }
-  g.fillStyle = "#3ddbb4"; g.font = "700 44px Unbounded, sans-serif";
+  if (been.length > 40) { g.font = "600 40px 'DM Sans', sans-serif"; g.fillText(`+${been.length - 40} more`, 80, 1130); }
+  g.fillStyle = "#c6f24e"; g.font = "800 48px 'Bricolage Grotesque', sans-serif";
   g.fillText(APP.name.toUpperCase(), 80, 1260);
-  g.fillStyle = "rgba(244,239,230,0.7)"; g.font = "500 30px 'Instrument Sans', sans-serif";
+  g.fillStyle = "rgba(244,239,230,0.7)"; g.font = "500 30px 'DM Sans', sans-serif";
   g.fillText("Map yours →", 80, 1300);
   return new Promise((r) => cv.toBlob((b) => r(b), "image/png"));
 }

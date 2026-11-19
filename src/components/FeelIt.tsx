@@ -4,11 +4,11 @@ import { CROWD_LABEL, type Gem, type Sound } from "@/lib/gems";
 import { Soundscape } from "@/lib/soundscape";
 
 const SKY: Record<Sound, [string, string, string]> = {
-  ocean: ["#ffb36b", "#ff6b4a", "#123a6b"],
-  forest: ["#3ddbb4", "#1f6b52", "#0a2a22"],
-  city: ["#5b6cf0", "#2a1f63", "#0b1026"],
-  market: ["#ffc24b", "#ff6b4a", "#3a1430"],
-  waterfall: ["#bdf3e6", "#3ddbb4", "#0f3b4a"],
+  ocean: ["#ffb36b", "#ff8a3d", "#123a6b"],
+  forest: ["#c6f24e", "#1f6b52", "#0a2a22"],
+  city: ["#9d8cff", "#2a1f63", "#0d0d0f"],
+  market: ["#ffb23e", "#ff8a3d", "#3a1430"],
+  waterfall: ["#bdf3e6", "#c6f24e", "#0f3b4a"],
   wind: ["#ffd9a0", "#ff9a4a", "#4a1f2a"],
 };
 
@@ -48,9 +48,9 @@ function Scene({ sound }: { sound: Sound }) {
             const h = 120 + ((i * 37) % 160);
             return (
               <g key={i}>
-                <rect x={i * 68} y={400 - h} width="58" height={h} fill="#0b1026" opacity="0.92" />
+                <rect x={i * 68} y={400 - h} width="58" height={h} fill="#0d0d0f" opacity="0.92" />
                 {Array.from({ length: 8 }, (_, j) => (
-                  <rect key={j} className="blink" style={{ animationDelay: `${((i + j) % 7) * 0.7}s` }} x={i * 68 + 8 + (j % 3) * 16} y={400 - h + 14 + Math.floor(j / 3) * 26} width="9" height="12" fill="#ffc24b" opacity="0.8" />
+                  <rect key={j} className="blink" style={{ animationDelay: `${((i + j) % 7) * 0.7}s` }} x={i * 68 + 8 + (j % 3) * 16} y={400 - h + 14 + Math.floor(j / 3) * 26} width="9" height="12" fill="#ffb23e" opacity="0.8" />
                 ))}
               </g>
             );
@@ -63,12 +63,12 @@ function Scene({ sound }: { sound: Sound }) {
             <g key={row}>
               <path d={`M0 ${60 + row * 70} Q 400 ${110 + row * 70} 800 ${60 + row * 70}`} stroke="#fff" strokeOpacity="0.4" fill="none" />
               {Array.from({ length: 16 }, (_, i) => (
-                <path key={i} className="sway" style={{ animationDelay: `${i * 0.15}s` }} d={`M${i * 52 + 10} ${70 + row * 70 + Math.sin(i / 2.5) * 12} l14 0 l-7 22z`} fill={["#ff6b4a", "#ffc24b", "#3ddbb4", "#b79cff"][(i + row) % 4]} />
+                <path key={i} className="sway" style={{ animationDelay: `${i * 0.15}s` }} d={`M${i * 52 + 10} ${70 + row * 70 + Math.sin(i / 2.5) * 12} l14 0 l-7 22z`} fill={["#ff8a3d", "#ffb23e", "#c6f24e", "#9d8cff"][(i + row) % 4]} />
               ))}
             </g>
           ))}
           {Array.from({ length: 7 }, (_, i) => <rect key={i} x={i * 120 + 10} y="300" width="100" height="100" rx="8" fill="#3a1430" opacity="0.8" />)}
-          {Array.from({ length: 7 }, (_, i) => <circle key={i} cx={i * 120 + 60} cy="296" r="16" fill="#ffc24b" opacity="0.5" />)}
+          {Array.from({ length: 7 }, (_, i) => <circle key={i} cx={i * 120 + 60} cy="296" r="16" fill="#ffb23e" opacity="0.5" />)}
         </g>
       )}
       {sound === "waterfall" && (
