@@ -33,7 +33,15 @@ function Root() {
     DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold, DMSans_700Bold, JetBrainsMono_600SemiBold,
   });
   const loaded = ready && fonts;
-  useEffect(() => { if (loaded) SplashScreen.hideAsync().catch(() => {}); }, [loaded]);
+  useEffect(() => {
+    if (!loaded) return;
+    SplashScreen.hideAsync().catch(() => {});
+    // Browser preview: remove the "Loading Tokende…" screen from index.html (see scripts/postexport.js).
+    if (Platform.OS === "web" && typeof document !== "undefined") {
+      (window as unknown as { __tkStarted?: boolean }).__tkStarted = true;
+      document.getElementById("tk-boot")?.remove();
+    }
+  }, [loaded]);
   if (!loaded) return null;
 
   // First run: create account or log in → intro slides → about you. Then the app.

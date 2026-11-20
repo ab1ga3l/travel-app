@@ -54,7 +54,7 @@
     "lint": "expo lint",
     "sync": "node scripts/sync-shared.js",
     "typecheck": "tsc --noEmit",
-    "preview:site": "EXPO_WEB_BASE=/app expo export -p web --clear --output-dir ../public/app"
+    "preview:site": "EXPO_WEB_BASE=/app expo export -p web --clear --output-dir ../public/app && node scripts/postexport.js"
   },
   "private": true
 }
