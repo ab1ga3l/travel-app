@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { payMethodsOf } from "@/lib/geo";
 import { useApp } from "@/lib/store";
-import { potRaised, potSpent } from "@/lib/tripTypes";
+import { potRaised, potShare, potSpent } from "@/lib/tripTypes";
 import { type TabProps, memberName, money, uid, waLink } from "./shared";
 
 const CATS = ["Stay", "Transport", "Food", "Activities", "Shopping", "Other"];
@@ -12,7 +12,7 @@ export function PotTab({ trip, me, canManage, update }: TabProps) {
   const methods = payMethodsOf(profile?.home ?? profile?.passport ?? "KE");
   const raised = potRaised(trip);
   const spent = potSpent(trip);
-  const share = trip.pot.target / Math.max(1, trip.members.length);
+  const share = potShare(trip);
   const pct = trip.pot.target ? Math.min(100, Math.round((raised / trip.pot.target) * 100)) : 0;
   const [pay, setPay] = useState({ memberId: me.id, amount: String(Math.round(share) || ""), method: methods[0], ref: "" });
   const [spend, setSpend] = useState({ label: "", amount: "", category: "Stay" });

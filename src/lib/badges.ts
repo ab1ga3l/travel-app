@@ -1,5 +1,5 @@
 import { continentOf } from "./geo";
-import type { Place } from "./store";
+import type { Place } from "./types";
 import type { TripDoc } from "./tripTypes";
 
 export interface Badge { id: string; emoji: string; name: string; how: string; earned: boolean; progress?: string }

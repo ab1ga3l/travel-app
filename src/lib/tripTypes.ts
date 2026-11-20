@@ -93,4 +93,6 @@ export const tripPhase = (t: TripDoc): "planning" | "upcoming" | "now" | "past" 
   return "upcoming";
 };
 export const potRaised = (t: TripDoc) => t.pot.contributions.filter((c) => c.status === "confirmed").reduce((a, c) => a + c.amount, 0);
+/** Each person's share of the pot: the planned budget per person, or the target split across the crew. */
+export const potShare = (t: TripDoc) => (t.budgetPerPerson > 0 ? t.budgetPerPerson : t.pot.target / Math.max(1, t.members.length));
 export const potSpent = (t: TripDoc) => t.pot.spends.reduce((a, s) => a + s.amount, 0);

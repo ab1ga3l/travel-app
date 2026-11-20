@@ -3,7 +3,7 @@ import { countryByCode } from "./countries";
 import { EXTRAS } from "./countryExtras";
 import { gemsFor } from "./gems";
 import type { Occasion, Vibe } from "./site";
-import type { Profile } from "./store";
+import type { Profile } from "./types";
 import { makeCode, type Member, type PlanItem, type TripDoc } from "./tripTypes";
 import { nameOf } from "./world";
 

@@ -4,29 +4,11 @@
 // every member of the trip in the cloud.
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from "react";
 import type { Session } from "@supabase/supabase-js";
-import type { AssistantStyle, Interest, Vibe } from "./site";
 import { sb } from "./supabaseBrowser";
 import type { TripDoc } from "./tripTypes";
 
-export type PlaceStatus = "been" | "going" | "dream";
-export interface Place { id: string; country: string; status: PlaceStatus; start?: string; end?: string; note?: string }
-export interface Profile {
-  name: string;
-  passport: string; // ISO2: where you're from
-  home?: string; // ISO2: where you live now
-  currency?: string;
-  vibes: Vibe[];
-  interests?: Interest[];
-  picks?: string[]; // what they chose on "What's your vibe?" (vibes + interests are derived from these)
-  budget: "backpacker" | "comfy" | "treat";
-  company: "solo" | "couple" | "friends" | "family";
-  pace: "slow" | "balanced" | "packed";
-  assistantStyle?: AssistantStyle;
-  assistantNickname?: string;
-  onboarded?: boolean;
-  publicMap?: boolean;
-}
-export type Vote = "yes" | "no" | "abstain";
+export type { Place, PlaceStatus, Profile, Vote } from "./types";
+import type { Place, Profile, Vote } from "./types";
 
 interface Ctx {
   ready: boolean;

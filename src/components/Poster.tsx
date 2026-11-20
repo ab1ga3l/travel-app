@@ -14,11 +14,12 @@ function seed(s: string) {
 export function PosterArt({ code, region, id }: { code: string; region: string; id?: string }) {
   const tint = TINT[region] ?? TINT.africa;
   const r = seed(code);
-  const cx = 110 + r() * 70;
-  const cy = 20 + r() * 60;
+  // Keep the art in the upper middle so the flag, the pill and the title stay clear.
+  const cx = 120 + r() * 45;
+  const cy = 70 + r() * 25;
   const rings = 6;
   const uid = (id ?? code).replace(/[^a-zA-Z0-9-]/g, "");
-  const y1 = 150 + r() * 25, y2 = 95 + r() * 30, y3 = 60 + r() * 30;
+  const y1 = 30 + r() * 30, y2 = 75 + r() * 25, y3 = 50 + r() * 30;
   return (
     <svg className="p-art" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
@@ -31,15 +32,20 @@ export function PosterArt({ code, region, id }: { code: string; region: string; 
           <stop offset="0.6" stopColor={tint} stopOpacity="0.06" />
           <stop offset="1" stopColor={tint} stopOpacity="0" />
         </radialGradient>
+        <linearGradient id={`fd-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#0f0f12" stopOpacity="0" />
+          <stop offset="1" stopColor="#0f0f12" stopOpacity="0.85" />
+        </linearGradient>
       </defs>
       <rect width="200" height="200" fill={`url(#bg-${uid})`} />
       <rect width="200" height="200" fill={`url(#gl-${uid})`} />
       {Array.from({ length: rings }, (_, i) => (
         <circle key={i} cx={cx} cy={cy} r={12 + i * 16} fill="none" stroke="#f4f1ea" strokeOpacity={0.14 - i * 0.018} strokeWidth="0.8" />
       ))}
-      <path d={`M-5 ${y1} C 50 ${y1 - 10}, 60 ${y2 + 20}, 100 ${y2} S 150 ${y3 + 10}, ${cx} ${cy}`} fill="none" stroke="#c6f24e" strokeOpacity="0.75" strokeWidth="1.4" strokeDasharray="4 4" strokeLinecap="round" />
+      <path d={`M-5 ${y1} C 40 ${y1 + 10}, 55 ${y2}, 90 ${y2} S 110 ${y3}, ${cx} ${cy}`} fill="none" stroke="#c6f24e" strokeOpacity="0.75" strokeWidth="1.4" strokeDasharray="4 4" strokeLinecap="round" />
       <circle cx={cx} cy={cy} r="3.2" fill="#c6f24e" />
       <circle cx={cx} cy={cy} r="7" fill="none" stroke="#c6f24e" strokeOpacity="0.35" />
+      <rect y="110" width="200" height="90" fill={`url(#fd-${uid})`} />
     </svg>
   );
 }

@@ -23,6 +23,9 @@ A travel app built Africa-first: know before you go, then go.
 - **Aviora**, the AI assistant (Claude): knows your passport, interests and chosen tone, uses the app's data and live web search.
 - **Deals and partners** keep the app free for travellers. **Installable** as an app (PWA).
 
+## The phone app
+The native iPhone and Android app lives in [`mobile/`](mobile/README.md) (Expo / React Native). It shares the data and logic in `src/lib` and uses the same backend.
+
 ## Run it
 ```bash
 npm install
