@@ -16,6 +16,9 @@ export function sb(): SupabaseClient | null {
 export const cloudEnabled = Boolean(url && anon);
 
 /** The web app's API (Aviora chat, trip text parsing). */
-export const API_URL = (process.env.EXPO_PUBLIC_API_URL || "").replace(/\/$/, "");
+// On a phone, talk to the live website unless EXPO_PUBLIC_API_URL says otherwise. In the browser
+// preview (served by the website at /app), use the same site.
+const LIVE_SITE = "https://travel-app-seven-lake.vercel.app";
+export const API_URL = (process.env.EXPO_PUBLIC_API_URL || (Platform.OS === "web" ? "" : LIVE_SITE)).replace(/\/$/, "");
 /** Whether Aviora can be reached: a configured server, or the website when the app runs as its /app preview. */
 export const apiReady = Boolean(API_URL) || Platform.OS === "web";
