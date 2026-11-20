@@ -19,6 +19,7 @@ export default function About() {
           <li>Entry rules for every passport: the open Passport Index dataset (MIT licence, updated February 2026).</li>
           <li>Visa checklists, fees and processes: official government and embassy pages, checked November 2026.</li>
           <li>Ratings, stories and tips: travellers in our community.</li>
+          <li>Flag images on computers without flag emoji: <a href="https://github.com/twitter/twemoji">Twemoji</a>, licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</li>
         </ul>
       </div>
     </div>
