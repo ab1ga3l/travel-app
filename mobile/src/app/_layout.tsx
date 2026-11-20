@@ -32,7 +32,8 @@ function Root() {
     BricolageGrotesque_700Bold, BricolageGrotesque_800ExtraBold,
     DMSans_400Regular, DMSans_500Medium, DMSans_600SemiBold, DMSans_700Bold, JetBrainsMono_600SemiBold,
   });
-  const loaded = ready && fonts;
+  // In the browser, don't wait for fonts: show the app straight away and let the fonts swap in.
+  const loaded = ready && (fonts || Platform.OS === "web");
   useEffect(() => {
     if (!loaded) return;
     SplashScreen.hideAsync().catch(() => {});
