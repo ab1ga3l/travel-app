@@ -24,8 +24,30 @@ export function PlanTab({ trip, update }: TabProps) {
     return `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(stops[0])}&destination=${encodeURIComponent(stops[stops.length - 1])}&waypoints=${encodeURIComponent(stops.slice(1, -1).join("|"))}`;
   };
 
+  const b = trip.brief;
+  const perPerson = b ? b.budget.reduce((x, y) => x + y.amount, 0) : 0;
   return (
     <div className="stack-lg">
+      {b && (
+        <section className="card glow" style={{ gap: 14 }}>
+          <div className="between"><span className="eyebrow">{b.by === "aviora" ? "✨ Planned by Aviora" : "Starter plan"}</span>{perPerson > 0 && <span className="badge tone-free">{trip.currency} {perPerson.toLocaleString()} each</span>}</div>
+          <p>{b.summary}</p>
+          {b.budget.length > 0 && (
+            <div className="stack" style={{ gap: 6 }}>
+              <span className="lbl">Budget per person</span>
+              {b.budget.map((x) => (
+                <div key={x.label} className="row" style={{ gap: 10, flexWrap: "nowrap" }}>
+                  <span style={{ width: 130, fontSize: "0.86rem" }}>{x.label}</span>
+                  <div className="bar" style={{ flex: 1 }}><i style={{ width: `${(x.amount / Math.max(1, perPerson)) * 100}%`, background: "var(--brand)" }} /></div>
+                  <strong style={{ minWidth: 96, textAlign: "right", fontSize: "0.86rem" }}>{trip.currency} {x.amount.toLocaleString()}</strong>
+                </div>
+              ))}
+            </div>
+          )}
+          {b.tips.length > 0 && <div className="stack" style={{ gap: 4 }}><span className="lbl">Good to know</span>{b.tips.map((t) => <span key={t} style={{ fontSize: "0.92rem" }}>💡 {t}</span>)}</div>}
+          {b.packing.length > 0 && <div className="stack" style={{ gap: 6 }}><span className="lbl">Pack</span><div className="chips">{b.packing.map((t) => <span key={t} className="badge tone-unknown">🎒 {t}</span>)}</div></div>}
+        </section>
+      )}
       {Array.from({ length: days }, (_, k) => k + 1).map((d) => {
         const list = trip.items.filter((i) => i.day === d).sort((a, b) => (a.time ?? "99").localeCompare(b.time ?? "99"));
         const url = dirUrl(list);

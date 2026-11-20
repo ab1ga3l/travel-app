@@ -2,12 +2,12 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { currencyOf } from "@/lib/geo";
-import { APP, ASSISTANT_STYLES, VIBE_PICKS, fromPicks, picksFrom } from "@/lib/site";
+import { VIBE_PICKS, fromPicks, picksFrom } from "@/lib/site";
 import { useApp, type Profile } from "@/lib/store";
 import { WORLD, flag, nameOf } from "@/lib/world";
 
 const POPULAR = ["KE", "NG", "GH", "ZA", "UG", "TZ", "RW", "ET", "EG", "SN", "CM", "CI", "ZW", "MA", "ZM"];
-const STEPS = ["About you", "Your vibe", "How you travel", "Your assistant"] as const;
+const STEPS = ["About you", "Your vibe", "How you travel"] as const;
 
 function CountrySelect({ id, value, onChange }: { id: string; value: string; onChange: (v: string) => void }) {
   return (
@@ -39,7 +39,7 @@ function Setup() {
   const can = step === 0 ? p.name.trim().length > 0 : step === 1 ? picks.length > 0 : true;
 
   const finish = () => {
-    saveProfile({ ...p, ...fromPicks(picks), home, currency, onboarded: true, assistantNickname: p.assistantNickname?.trim() || undefined });
+    saveProfile({ ...p, ...fromPicks(picks), home, currency, onboarded: true, assistantNickname: undefined });
     const next = sp.get("next");
     router.replace(next && next.startsWith("/") ? next : "/trips/new?first=1");
   };
@@ -55,7 +55,7 @@ function Setup() {
         <section className="stack-lg">
           <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>Who&apos;s <span className="gradient-text">travelling?</span></h1>
           {session?.user.phone || session?.user.email ? <p className="muted">Signed in as {session.user.phone ? `+${session.user.phone}` : session.user.email}</p> : null}
-          <div><label className="lbl" htmlFor="nm">Your name</label><input id="nm" value={p.name} maxLength={40} autoComplete="given-name" placeholder="First name" onChange={(e) => setP({ ...p, name: e.target.value })} /></div>
+          <div><label className="lbl" htmlFor="nm">Your full name</label><input id="nm" value={p.name} maxLength={60} autoComplete="name" placeholder="e.g. Amina Wanjiru" onChange={(e) => setP({ ...p, name: e.target.value })} /></div>
           <div><label className="lbl" htmlFor="pp">Where are you from? (your passport)</label><CountrySelect id="pp" value={p.passport} onChange={(v) => setP({ ...p, passport: v, currency: undefined })} /></div>
           <div className="stack" style={{ gap: 8 }}>
             <span className="lbl">Where do you live now?</span>
@@ -84,25 +84,10 @@ function Setup() {
 
       {step === 2 && (
         <section className="stack-lg">
-          <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>How do you <span className="gradient-text">roll?</span></h1>
+          <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>How do you like to <span className="gradient-text">travel?</span></h1>
           <Group label="Budget" value={p.budget} onChange={(v) => setP({ ...p, budget: v as Profile["budget"] })} options={[["backpacker", "🎒", "Backpacker"], ["comfy", "🛋️", "Comfy"], ["treat", "🥂", "Treat myself"]]} />
           <Group label="Usually with" value={p.company} onChange={(v) => setP({ ...p, company: v as Profile["company"] })} options={[["solo", "🧍🏾", "Solo"], ["couple", "💑", "Partner"], ["friends", "👯", "Friends"], ["family", "👨‍👩‍👧", "Family"]]} />
           <Group label="Pace" value={p.pace} onChange={(v) => setP({ ...p, pace: v as Profile["pace"] })} options={[["slow", "🐢", "Slow"], ["balanced", "⚖️", "Balanced"], ["packed", "⚡", "Pack it in"]]} />
-        </section>
-      )}
-
-      {step === 3 && (
-        <section className="stack-lg">
-          <h1 style={{ fontSize: "clamp(1.8rem,7vw,2.4rem)" }}>Meet <span className="gradient-text">{p.assistantNickname?.trim() || APP.assistant}</span>, your travel buddy</h1>
-          <p className="muted">Ask about visas, budgets, where to go and what to do. How should it talk to you?</p>
-          <div className="choice-grid">
-            {ASSISTANT_STYLES.map((s) => (
-              <button key={s.id} type="button" className="choice" aria-pressed={p.assistantStyle === s.id} onClick={() => setP({ ...p, assistantStyle: s.id })}>
-                <span className="big" aria-hidden="true">{s.emoji}</span><strong>{s.label}</strong><span className="muted" style={{ fontSize: "0.82rem" }}>{s.hint}</span>
-              </button>
-            ))}
-          </div>
-          <div><label className="lbl" htmlFor="nick">Give it a nickname (optional)</label><input id="nick" maxLength={20} value={p.assistantNickname ?? ""} placeholder={APP.assistant} onChange={(e) => setP({ ...p, assistantNickname: e.target.value })} /></div>
         </section>
       )}
 

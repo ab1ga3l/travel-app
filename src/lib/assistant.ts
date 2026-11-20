@@ -82,8 +82,7 @@ function systemPrompt(profile?: TravelerContext) {
   const me = profile
     ? `\n\nThe traveller: ${profile.name || "unnamed"}, ${nameOf(profile.passport)} passport${profile.vibes?.length ? `, vibes: ${profile.vibes.join(", ")}` : ""}${profile.budget ? `, budget: ${profile.budget}` : ""}${profile.company ? `, travelling ${profile.company}` : ""}${profile.pace ? `, pace: ${profile.pace}` : ""}${profile.home && profile.home !== profile.passport ? `, lives in ${nameOf(profile.home)}` : ""}${profile.interests?.length ? `, interests: ${profile.interests.join(", ")}` : ""}. Use their passport for visa answers unless they say otherwise. If they're into crypto, BTC Map (btcmap.org) shows places that accept bitcoin.\n${STYLE[profile.assistantStyle ?? "warm"]}`
     : "";
-  const nick = profile?.assistantNickname?.trim();
-  return `You are ${nick || APP.assistant}${nick && nick !== APP.assistant ? ` (the traveller chose this name for you; you are ${APP.assistant}, ${APP.name}'s assistant)` : ""}, the travel companion inside ${APP.name}, an app built Africa-first for people whose passports make travel harder.
+  return `You are ${APP.assistant}, the travel companion inside ${APP.name}, an app built Africa-first for people whose passports make travel harder.
 You help people choose where to go for their vibe, understand visas, prepare strong applications, budget, stay safe, find hidden gems, and think through moving abroad.
 
 How you work:
@@ -96,7 +95,7 @@ How you work:
 - When useful, link to app pages returned by your tools.${me}`;
 }
 
-export interface TravelerContext { name?: string; passport: string; home?: string; vibes?: string[]; interests?: string[]; budget?: string; company?: string; pace?: string; assistantStyle?: "warm" | "direct" | "detailed"; assistantNickname?: string }
+export interface TravelerContext { name?: string; passport: string; home?: string; vibes?: string[]; interests?: string[]; budget?: string; company?: string; pace?: string; assistantStyle?: "warm" | "direct" | "detailed" }
 
 const STYLE = {
   warm: "Tone: warm, upbeat and fun, like a well-travelled best friend. A few emojis are welcome. Keep it concise.",

@@ -8,7 +8,6 @@ import { flag, nameOf } from "@/lib/world";
 
 export default function ProfilePage() {
   const { ready, profile, places, tripDocs, session, saveProfile, signOut, resetDevice } = useApp();
-  const [nick, setNick] = useState<string | null>(null);
   const [confirmReset, setConfirmReset] = useState(false);
 
   if (!ready) return <div className="muted">Loading…</div>;
@@ -19,14 +18,13 @@ export default function ProfilePage() {
     const next = picks.includes(id) ? picks.filter((x) => x !== id) : [...picks, id];
     if (next.length) saveProfile({ ...profile, picks: next, ...fromPicks(next) });
   };
-  const nickname = nick ?? profile.assistantNickname ?? "";
   const user = session?.user;
 
   return (
     <div className="stack-lg fade-in" style={{ maxWidth: 860 }}>
       <div className="stack" style={{ gap: 10 }}>
         <span className="eyebrow">Profile</span>
-        <h1>Hey, <span className="gradient-text">{profile.name || "traveller"}</span></h1>
+        <h1>Hey, <span className="gradient-text">{profile.name.split(" ")[0] || "traveller"}</span></h1>
       </div>
 
       <section className="card" style={{ gap: 14 }}>
@@ -47,12 +45,8 @@ export default function ProfilePage() {
       </section>
 
       <section className="card" style={{ gap: 12 }}>
-        <h2>Your assistant</h2>
+        <h2>How {APP.assistant} talks to you</h2>
         <div className="chips">{ASSISTANT_STYLES.map((s) => <button key={s.id} type="button" className="chip" aria-pressed={(profile.assistantStyle ?? "warm") === s.id} onClick={() => saveProfile({ ...profile, assistantStyle: s.id })}>{s.emoji} {s.label}</button>)}</div>
-        <div className="field-row" style={{ alignItems: "end" }}>
-          <div><label className="lbl" htmlFor="nk">What should your assistant be called?</label><input id="nk" maxLength={20} value={nickname} placeholder={APP.assistant} onChange={(e) => setNick(e.target.value)} /></div>
-          <button type="button" className="btn btn-soft" style={{ flex: "0 0 auto" }} onClick={() => { saveProfile({ ...profile, assistantNickname: nickname.trim() || undefined }); setNick(null); }}>Save name</button>
-        </div>
       </section>
 
       <section className="card" style={{ gap: 12 }}>

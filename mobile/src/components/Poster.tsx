@@ -5,7 +5,7 @@ import Svg, { Circle, Defs, LinearGradient, Path, RadialGradient, Rect, Stop } f
 import { flag } from "@/shared/world";
 import { FONT } from "@/theme";
 
-const TINT: Record<string, string> = { africa: "#ff8a3d", asia: "#5ad1c9", europe: "#9d8cff" };
+const TINT: Record<string, string> = { africa: "#b02a52", asia: "#8b1e3f", europe: "#6e1a35" };
 
 function seed(s: string) {
   let h = 2166136261;
@@ -23,18 +23,18 @@ export function PosterArt({ code, region }: { code: string; region: string }) {
   return (
     <Svg width="100%" height="100%" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0 }}>
       <Defs>
-        <LinearGradient id={`b${id}`} x1="0" y1="0" x2="0" y2="1"><Stop offset="0" stopColor="#1e1e24" /><Stop offset="1" stopColor="#0f0f12" /></LinearGradient>
+        <LinearGradient id={`b${id}`} x1="0" y1="0" x2="0" y2="1"><Stop offset="0" stopColor="#141416" /><Stop offset="1" stopColor="#000000" /></LinearGradient>
         <RadialGradient id={`g${id}`} cx={cx} cy={cy} rx="150" ry="150" gradientUnits="userSpaceOnUse">
           <Stop offset="0" stopColor={tint} stopOpacity="0.3" /><Stop offset="0.6" stopColor={tint} stopOpacity="0.06" /><Stop offset="1" stopColor={tint} stopOpacity="0" />
         </RadialGradient>
-        <LinearGradient id={`f${id}`} x1="0" y1="0" x2="0" y2="1"><Stop offset="0" stopColor="#0f0f12" stopOpacity="0" /><Stop offset="1" stopColor="#0f0f12" stopOpacity="0.85" /></LinearGradient>
+        <LinearGradient id={`f${id}`} x1="0" y1="0" x2="0" y2="1"><Stop offset="0" stopColor="#000000" stopOpacity="0" /><Stop offset="1" stopColor="#000000" stopOpacity="0.85" /></LinearGradient>
       </Defs>
       <Rect width="200" height="200" fill={`url(#b${id})`} />
       <Rect width="200" height="200" fill={`url(#g${id})`} />
       {Array.from({ length: 6 }, (_, i) => <Circle key={i} cx={cx} cy={cy} r={12 + i * 16} fill="none" stroke="#f4f1ea" strokeOpacity={0.14 - i * 0.018} strokeWidth={0.8} />)}
-      <Path d={`M-5 ${y1} C 40 ${y1 + 10}, 55 ${y2}, 90 ${y2} S 110 ${y3}, ${cx} ${cy}`} fill="none" stroke="#c6f24e" strokeOpacity={0.75} strokeWidth={1.4} strokeDasharray="4 4" strokeLinecap="round" />
-      <Circle cx={cx} cy={cy} r={3.2} fill="#c6f24e" />
-      <Circle cx={cx} cy={cy} r={7} fill="none" stroke="#c6f24e" strokeOpacity={0.35} />
+      <Path d={`M-5 ${y1} C 40 ${y1 + 10}, 55 ${y2}, 90 ${y2} S 110 ${y3}, ${cx} ${cy}`} fill="none" stroke="#ffffff" strokeOpacity={0.75} strokeWidth={1.4} strokeDasharray="4 4" strokeLinecap="round" />
+      <Circle cx={cx} cy={cy} r={3.2} fill="#ffffff" />
+      <Circle cx={cx} cy={cy} r={7} fill="none" stroke="#ffffff" strokeOpacity={0.35} />
       <Rect y="110" width="200" height="90" fill={`url(#f${id})`} />
     </Svg>
   );
@@ -43,7 +43,7 @@ export function PosterArt({ code, region }: { code: string; region: string }) {
 /** A poster block: art behind, flag + pill on top, title at the bottom. */
 export function Poster({ code, seedKey, region, title, pill, sub, height = 170, style }: { code: string; seedKey?: string; region: string; title: string; pill?: string; sub?: ReactNode; height?: number; style?: StyleProp<ViewStyle> }) {
   return (
-    <View style={[{ height, borderRadius: 20, overflow: "hidden", padding: 16, justifyContent: "space-between", backgroundColor: "#0f0f12" }, style]}>
+    <View style={[{ height, borderRadius: 20, overflow: "hidden", padding: 16, justifyContent: "space-between", backgroundColor: "#000000" }, style]}>
       <PosterArt code={seedKey ?? code} region={region} />
       <View style={{ flexDirection: "row", justifyContent: "space-between", alignItems: "flex-start" }}>
         <Text style={{ fontSize: 28 }}>{flag(code)}</Text>

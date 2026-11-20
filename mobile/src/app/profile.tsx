@@ -1,7 +1,6 @@
 import { router } from "expo-router";
-import { useState } from "react";
 import { Alert, Platform, Switch, View } from "react-native";
-import { Between, Body, Button, Card, Chip, Field, H1, H3, Hi, Muted, Row, Screen, Strong, Tile } from "@/components/ui";
+import { Between, Body, Button, Card, Chip, H1, H3, Hi, Muted, Row, Screen, Strong, Tile } from "@/components/ui";
 import { useApp } from "@/lib/store";
 import { cloudEnabled } from "@/lib/supabase";
 import { APP, ASSISTANT_STYLES, VIBE_PICKS, fromPicks, picksFrom } from "@/shared/site";
@@ -11,7 +10,6 @@ import { useTheme } from "@/theme";
 export default function Profile() {
   const t = useTheme();
   const { profile, places, tripDocs, session, saveProfile, signOut, resetDevice, exitGuest } = useApp();
-  const [nick, setNick] = useState(profile?.assistantNickname ?? "");
   if (!profile) return null;
   const picks = profile.picks ?? picksFrom(profile.vibes, profile.interests);
   const toggle = (id: string) => {
@@ -25,7 +23,7 @@ export default function Profile() {
 
   return (
     <Screen header padBottom={60}>
-      <H1>Hey, <Hi>{profile.name || "traveller"}</Hi></H1>
+      <H1>Hey, <Hi>{profile.name.split(" ")[0] || "traveller"}</Hi></H1>
       <Card style={{ gap: 10 }}>
         <Between><H3>About you</H3><Button label="Edit" kind="soft" small onPress={() => { saveProfile({ ...profile, onboarded: false }); }} /></Between>
         {[["Passport", `${flag(profile.passport)} ${nameOf(profile.passport)}`], ...(profile.home && profile.home !== profile.passport ? [["Lives in", `${flag(profile.home)} ${nameOf(profile.home)}`]] : []), ["Currency", profile.currency ?? "USD"], ["Style", `${profile.budget} · ${profile.company} · ${profile.pace}`], ["Trips · map", `${tripDocs.length} trips · ${places.filter((p) => p.status === "been").length} countries`]].map(([k, v]) => (
@@ -37,10 +35,8 @@ export default function Profile() {
         <Row gap={6} wrap>{VIBE_PICKS.map((v) => <Chip key={v.id} label={`${v.emoji} ${v.label}`} on={picks.includes(v.id)} onPress={() => toggle(v.id)} />)}</Row>
       </Card>
       <Card style={{ gap: 12 }}>
-        <H3>Your assistant</H3>
+        <H3>How {APP.assistant} talks to you</H3>
         <View style={{ flexDirection: "row", gap: 8 }}>{ASSISTANT_STYLES.map((s) => <Tile key={s.id} emoji={s.emoji} label={s.label} on={(profile.assistantStyle ?? "warm") === s.id} onPress={() => saveProfile({ ...profile, assistantStyle: s.id })} style={{ flex: 1, minHeight: 90 }} />)}</View>
-        <Row gap={10}><View style={{ flex: 1 }}><Field label="Nickname" value={nick} onChangeText={setNick} placeholder={APP.assistant} maxLength={20} /></View></Row>
-        <Button label="Save name" kind="soft" small onPress={() => saveProfile({ ...profile, assistantNickname: nick.trim() || undefined })} />
       </Card>
       <Card style={{ gap: 10 }}>
         <Between><H3 style={{ flex: 1 }}>&quot;Been there&quot; badge</H3><Switch value={!!profile.publicMap} disabled={!session} onValueChange={(v) => saveProfile({ ...profile, publicMap: v })} trackColor={{ true: t.brand, false: t.line }} thumbColor="#fff" /></Between>

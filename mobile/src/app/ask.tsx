@@ -4,7 +4,7 @@ import { FlatList, type FlatListInstance, KeyboardAvoidingView, Platform, Text, 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Button, Chip, H1, Hi, Muted, Note, Row } from "@/components/ui";
 import { useApp } from "@/lib/store";
-import { API_URL } from "@/lib/supabase";
+import { API_URL, apiReady } from "@/lib/supabase";
 import { APP } from "@/shared/site";
 import { nameOf } from "@/shared/world";
 import { FONT, R, useTheme } from "@/theme";
@@ -15,7 +15,7 @@ export default function Ask() {
   const t = useTheme();
   const insets = useSafeAreaInsets();
   const { profile } = useApp();
-  const nick = profile?.assistantNickname || APP.assistant;
+  const nick = APP.assistant;
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [text, setText] = useState("");
   const [busy, setBusy] = useState(false);
@@ -27,7 +27,7 @@ export default function Ask() {
     const next = [...msgs, { role: "user" as const, content: q.trim() }];
     setMsgs(next); setText(""); setBusy(true);
     try {
-      const r = await fetch(`${API_URL}/api/chat`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next, profile: profile ? { name: profile.name, passport: profile.passport, home: profile.home, vibes: profile.vibes, interests: profile.interests, budget: profile.budget, company: profile.company, pace: profile.pace, assistantStyle: profile.assistantStyle, assistantNickname: profile.assistantNickname } : undefined }) });
+      const r = await fetch(`${API_URL}/api/chat`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: next, profile: profile ? { name: profile.name, passport: profile.passport, home: profile.home, vibes: profile.vibes, interests: profile.interests, budget: profile.budget, company: profile.company, pace: profile.pace, assistantStyle: profile.assistantStyle } : undefined }) });
       const j = await r.json();
       setMsgs([...next, { role: "assistant", content: r.ok ? j.reply : j.error ?? "Something went wrong. Try again." }]);
     } catch { setMsgs([...next, { role: "assistant", content: "I couldn't connect. Check your internet and try again." }]); }
@@ -40,7 +40,7 @@ export default function Ask() {
         ListHeaderComponent={<View style={{ gap: 12, marginBottom: 6 }}>
           <H1>Ask <Hi>{nick}</Hi></H1>
           <Muted>Visas, budgets, where to go, what to do. {nick} knows your passport and your vibe.</Muted>
-          {!API_URL && <Note>{nick} switches on when the app is connected to the server (EXPO_PUBLIC_API_URL).</Note>}
+          {!apiReady && <Note>{nick} switches on when the app is connected to the server (EXPO_PUBLIC_API_URL).</Note>}
           {msgs.length === 0 && <Row gap={6} wrap>{starters.map((s) => <Chip key={s} label={s} onPress={() => send(s)} />)}</Row>}
         </View>}
         renderItem={({ item }) => (
@@ -52,7 +52,7 @@ export default function Ask() {
       <View style={{ flexDirection: "row", gap: 8, padding: 12, paddingBottom: insets.bottom + 12, borderTopWidth: 1, borderTopColor: t.line, backgroundColor: t.bg }}>
         <TextInput value={text} onChangeText={setText} placeholder={`Message ${nick}`} placeholderTextColor={t.muted} multiline maxLength={2000}
           style={{ flex: 1, maxHeight: 120, backgroundColor: t.surface2, borderRadius: R.md, borderWidth: 1, borderColor: t.line, color: t.ink, fontFamily: FONT.body, fontSize: 15.5, paddingHorizontal: 14, paddingVertical: 10 }} />
-        <Button label="Send" disabled={!text.trim() || !API_URL} busy={busy} onPress={() => send(text)} style={{ alignSelf: "flex-end" }} />
+        <Button label="Send" disabled={!text.trim() || !apiReady} busy={busy} onPress={() => send(text)} style={{ alignSelf: "flex-end" }} />
       </View>
       <Muted style={{ fontSize: 11, textAlign: "center", paddingBottom: 4 }}>AI can make mistakes. Confirm visa rules on official sites.</Muted>
     </KeyboardAvoidingView>

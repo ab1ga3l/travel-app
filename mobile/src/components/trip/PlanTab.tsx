@@ -1,6 +1,6 @@
 import { Linking, Pressable, Text, View } from "react-native";
 import { useState } from "react";
-import { Between, Button, Card, Chip, Field, H3, Muted, Row, Strong, tap } from "@/components/ui";
+import { Badge, Between, Body, Button, Card, Chip, Field, H3, Label, Muted, Progress, Row, Strong, tap } from "@/components/ui";
 import { gemsFor } from "@/shared/gems";
 import { tripDays } from "@/shared/tripBuild";
 import type { ItemKind, PlanItem } from "@/shared/tripTypes";
@@ -27,8 +27,29 @@ export function PlanTab({ trip, update }: TabProps) {
     Linking.openURL(url);
   };
 
+  const b = trip.brief;
+  const perPerson = b ? b.budget.reduce((x, y) => x + y.amount, 0) : 0;
   return (
     <View style={{ gap: 14 }}>
+      {b && (
+        <Card glow style={{ gap: 12 }}>
+          <Between><Label>{b.by === "aviora" ? "✨ Planned by Aviora" : "Starter plan"}</Label>{perPerson > 0 && <Badge label={`${trip.currency} ${perPerson.toLocaleString()} each`} t="free" />}</Between>
+          <Body>{b.summary}</Body>
+          {b.budget.length > 0 && (
+            <View style={{ gap: 8 }}>
+              <Label>Budget per person</Label>
+              {b.budget.map((x) => (
+                <View key={x.label} style={{ gap: 4 }}>
+                  <Between><Muted style={{ fontSize: 13 }}>{x.label}</Muted><Strong style={{ fontSize: 13 }}>{trip.currency} {x.amount.toLocaleString()}</Strong></Between>
+                  <Progress value={(x.amount / Math.max(1, perPerson)) * 100} />
+                </View>
+              ))}
+            </View>
+          )}
+          {b.tips.length > 0 && <View style={{ gap: 6 }}><Label>Good to know</Label>{b.tips.map((x) => <Body key={x} style={{ fontSize: 14.5 }}>💡 {x}</Body>)}</View>}
+          {b.packing.length > 0 && <View style={{ gap: 6 }}><Label>Pack</Label><Row gap={6} wrap>{b.packing.map((x) => <Badge key={x} label={`🎒 ${x}`} />)}</Row></View>}
+        </Card>
+      )}
       {Array.from({ length: days }, (_, k) => k + 1).map((d) => {
         const list = trip.items.filter((i) => i.day === d).sort((a, b) => (a.time ?? "99").localeCompare(b.time ?? "99"));
         return (
@@ -42,7 +63,7 @@ export function PlanTab({ trip, update }: TabProps) {
                 <Text style={{ fontSize: 20 }}>{icon(i.kind)}</Text>
                 <View style={{ flex: 1 }}>
                   <Strong>{i.title}</Strong>
-                  {(i.time || i.note) ? <Muted style={{ fontSize: 13 }}>{[i.time, i.note].filter(Boolean).join(" · ")}</Muted> : null}
+                  {(i.time || i.note || i.cost) ? <Muted style={{ fontSize: 13 }}>{[i.time, i.note, i.cost ? `${trip.currency} ${i.cost.toLocaleString()}` : ""].filter(Boolean).join(" · ")}</Muted> : null}
                 </View>
                 <Row gap={4}>
                   <Pressable hitSlop={8} onPress={() => { tap(); move(i.id, d - 1); }} disabled={d === 1}><Text style={{ fontSize: 18, color: d === 1 ? t.line : t.muted, paddingHorizontal: 4 }}>↑</Text></Pressable>

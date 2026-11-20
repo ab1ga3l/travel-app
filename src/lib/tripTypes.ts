@@ -19,6 +19,14 @@ export interface Expense { id: string; label: string; amount: number; paidBy: st
 export interface Proposal { id: string; title: string; detail?: string; kind: "activity" | "place" | "date" | "other"; deadline?: string; sealed: boolean; revealed?: boolean; createdBy: string; at: string; localVote?: "yes" | "no" | "abstain" }
 export interface CheckIn { id: string; at: string; message: string }
 
+export interface TripBrief {
+  summary: string;
+  budget: { label: string; amount: number }[]; // per person, in the trip currency
+  tips: string[];
+  packing: string[];
+  by: "aviora" | "quick";
+}
+
 export interface TripDoc {
   id: string;
   code: string; // 6-letter invite code
@@ -39,6 +47,8 @@ export interface TripDoc {
   expenses: Expense[];
   proposals: Proposal[];
   safety: { contactName?: string; contactPhone?: string; checkIns: CheckIn[] };
+  /** Aviora's write-up when the trip was built from a description. */
+  brief?: TripBrief;
   createdAt: string;
   updatedAt: string;
 }

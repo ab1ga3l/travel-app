@@ -33,7 +33,7 @@ export default function MyMap() {
       for (const [c, v] of Object.entries(row) as [string, VisaCode][]) m[c] = TONE_COLORS[visaLabel(v).tone] ?? "var(--muted)";
       for (const c of been) m[c] = "var(--lilac)";
     }
-    if (profile?.passport) m[profile.passport] = mode === "travels" ? "color-mix(in srgb, var(--lilac) 60%, transparent)" : "var(--lilac)";
+    if (profile?.passport) m[profile.passport] = "var(--ink)";
     return m;
   }, [mode, places, row, been, profile?.passport]);
 
@@ -80,7 +80,7 @@ export default function MyMap() {
         <WorldMap colors={colors} onPick={setPicked} label={mode === "travels" ? "Countries you've visited" : "Where your passport can go"} />
         <div className="legend" style={{ padding: "8px 4px 0" }}>
           {mode === "travels" ? <>
-            <span><i style={{ background: "var(--mint)" }} />Been</span><span><i style={{ background: "var(--gold)" }} />Going</span><span><i style={{ background: "var(--lilac)" }} />Dream</span>
+            <span><i style={{ background: "var(--brand-text)" }} />Been</span><span><i style={{ background: "var(--gold)" }} />Going</span><span><i style={{ background: "color-mix(in srgb, var(--ink) 55%, transparent)" }} />Dream</span><span><i style={{ background: "var(--ink)" }} />Home</span>
           </> : <>
             <span><i style={{ background: "var(--mint)" }} />Visa-free / on arrival</span><span><i style={{ background: "var(--gold)" }} />eVisa</span><span><i style={{ background: "var(--sunrise)" }} />Visa required</span><span><i style={{ background: "var(--lilac)" }} />Been / home</span>
           </>}

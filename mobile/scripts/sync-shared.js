@@ -5,7 +5,7 @@ const path = require("path");
 
 const root = path.resolve(__dirname, "../..");
 const out = path.resolve(__dirname, "../src/shared");
-const FILES = ["site", "types", "countries", "countryExtras", "gems", "visa", "world", "geo", "events", "tripTypes", "tripBuild", "badges", "match", "interestTags"];
+const FILES = ["site", "types", "countries", "countryExtras", "gems", "visa", "world", "geo", "events", "tripTypes", "tripBuild", "badges", "match", "interestTags", "tripText"];
 
 fs.mkdirSync(out, { recursive: true });
 for (const f of FILES) {

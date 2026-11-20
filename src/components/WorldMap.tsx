@@ -37,5 +37,5 @@ export function WorldMap({ colors, labels, onPick, label = "World map" }: { colo
   );
 }
 
-export const STATUS_COLORS = { been: "var(--mint)", going: "var(--gold)", dream: "var(--lilac)" } as const;
+export const STATUS_COLORS = { been: "var(--brand-text)", going: "var(--gold)", dream: "color-mix(in srgb, var(--ink) 55%, transparent)" } as const;
 export const TONE_COLORS: Record<string, string> = { free: "var(--mint)", easy: "var(--gold)", hard: "var(--sunrise)", none: "var(--muted)" };

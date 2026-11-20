@@ -2,6 +2,7 @@
 // Without EXPO_PUBLIC_SUPABASE_URL / EXPO_PUBLIC_SUPABASE_ANON_KEY the app runs in "on this phone" mode.
 import "expo-sqlite/localStorage/install";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
+import { Platform } from "react-native";
 
 const url = process.env.EXPO_PUBLIC_SUPABASE_URL;
 const anon = process.env.EXPO_PUBLIC_SUPABASE_ANON_KEY;
@@ -16,3 +17,5 @@ export const cloudEnabled = Boolean(url && anon);
 
 /** The web app's API (Aviora chat, trip text parsing). */
 export const API_URL = (process.env.EXPO_PUBLIC_API_URL || "").replace(/\/$/, "");
+/** Whether Aviora can be reached: a configured server, or the website when the app runs as its /app preview. */
+export const apiReady = Boolean(API_URL) || Platform.OS === "web";

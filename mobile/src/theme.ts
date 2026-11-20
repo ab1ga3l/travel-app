@@ -1,42 +1,42 @@
-// "Go Signal" design system, same as the web app.
-// Go lime = brand, visa-free, paid, safe. Amber = prepare first. Coral = stop. Violet = people.
-import { useColorScheme } from "react-native";
+// Black, burgundy and white. Burgundy is the brand (buttons, highlights, your own places).
+// Status colours follow traffic lights so they read instantly: green = go, amber = get ready, red = stop.
+import { Platform, useColorScheme } from "react-native";
 
 const dark = {
-  bg: "#0d0d0f",
-  bg2: "#121215",
-  surface: "#18181c",
-  surface2: "#222228",
-  line: "#2c2c33",
-  lineStrong: "#44444d",
-  ink: "#f4f1ea",
-  muted: "#9c9aa3",
-  brand: "#c6f24e",
-  brandText: "#c6f24e",
-  onBrand: "#0d0d0f",
-  go: "#c6f24e",
-  ready: "#ffb23e",
-  stop: "#ff5a5f",
-  crew: "#9d8cff",
-  glass: "rgba(18,18,21,0.92)",
+  bg: "#000000",
+  bg2: "#0a0a0a",
+  surface: "#111113",
+  surface2: "#1b1b1e",
+  line: "#26262a",
+  lineStrong: "#3a3a40",
+  ink: "#ffffff",
+  muted: "#a3a3ab",
+  brand: "#8b1e3f",
+  brandText: "#e0577d",
+  onBrand: "#ffffff",
+  go: "#34c759",
+  ready: "#ffb340",
+  stop: "#ff453a",
+  crew: "#e0577d",
+  glass: "rgba(0,0,0,0.92)",
 };
 const light: typeof dark = {
-  bg: "#f6f3ec",
-  bg2: "#efebe1",
+  bg: "#ffffff",
+  bg2: "#f6f6f7",
   surface: "#ffffff",
-  surface2: "#f3efe6",
-  line: "#e4dfd4",
-  lineStrong: "#cfc8b9",
-  ink: "#111114",
-  muted: "#6b6872",
-  brand: "#c6f24e",
-  brandText: "#3f7d0a",
-  onBrand: "#0d0d0f",
-  go: "#3f7d0a",
-  ready: "#a66300",
-  stop: "#d9363d",
-  crew: "#5b46d9",
-  glass: "rgba(246,243,236,0.95)",
+  surface2: "#f3f3f5",
+  line: "#e6e6ea",
+  lineStrong: "#cfcfd6",
+  ink: "#0a0a0a",
+  muted: "#6b6b73",
+  brand: "#8b1e3f",
+  brandText: "#8b1e3f",
+  onBrand: "#ffffff",
+  go: "#1f9d47",
+  ready: "#b86e00",
+  stop: "#d70015",
+  crew: "#8b1e3f",
+  glass: "rgba(255,255,255,0.95)",
 };
 export type Palette = typeof dark;
 export const PALETTES = { dark, light };
@@ -46,13 +46,16 @@ export function useTheme(): Palette & { scheme: "dark" | "light" } {
   return { ...PALETTES[s], scheme: s };
 }
 
+// In the browser preview, flags come from the Twemoji flag font (Windows has no flag emoji).
+// Phones show their own emoji, so this only applies on the web.
+const F = (name: string) => (Platform.OS === "web" ? `"Twemoji Country Flags", ${name}` : name);
 export const FONT = {
-  display: "BricolageGrotesque_800ExtraBold",
-  displayBold: "BricolageGrotesque_700Bold",
-  body: "DMSans_400Regular",
-  bodyMedium: "DMSans_500Medium",
-  bodySemi: "DMSans_600SemiBold",
-  bodyBold: "DMSans_700Bold",
+  display: F("BricolageGrotesque_800ExtraBold"),
+  displayBold: F("BricolageGrotesque_700Bold"),
+  body: F("DMSans_400Regular"),
+  bodyMedium: F("DMSans_500Medium"),
+  bodySemi: F("DMSans_600SemiBold"),
+  bodyBold: F("DMSans_700Bold"),
   mono: "JetBrainsMono_600SemiBold",
 };
 

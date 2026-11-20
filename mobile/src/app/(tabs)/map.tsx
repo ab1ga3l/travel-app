@@ -28,13 +28,13 @@ export default function MyMap() {
   const streak = travelStreak(places);
   const badges = badgesFor(places, tripDocs, streak);
   const pct = ((been.length / 195) * 100).toFixed(1);
-  const statusColor = { been: t.go, going: t.ready, dream: t.crew };
+  const statusColor = { been: t.brandText, going: t.ready, dream: withAlpha(t.ink, 0.55) };
 
   const colors = useMemo(() => {
     const m: Record<string, string> = {};
     if (mode === "travels") for (const s of ["dream", "going", "been"] as PlaceStatus[]) for (const p of places.filter((x) => x.status === s)) m[p.country] = statusColor[s];
     else { for (const [c, v] of Object.entries(row) as [string, VisaCode][]) m[c] = tone(t, visaLabel(v).tone); for (const c of been) m[c] = t.crew; }
-    if (profile?.passport && !m[profile.passport]) m[profile.passport] = withAlpha(t.crew, 0.6);
+    if (profile?.passport) m[profile.passport] = t.ink;
     return m;
   }, [mode, places, row, been, profile?.passport, t]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -57,7 +57,7 @@ export default function MyMap() {
       <Card style={{ padding: 10 }}>
         <WorldMap colors={colors} onPick={setPicked} />
         <Row gap={12} wrap style={{ paddingHorizontal: 6 }}>
-          {(mode === "travels" ? [[t.go, "Been"], [t.ready, "Going"], [t.crew, "Dream"]] : [[t.go, "Visa-free"], [t.ready, "eVisa"], [t.stop, "Visa needed"], [t.crew, "Been"]]).map(([c, l]) => (
+          {(mode === "travels" ? [[t.brandText, "Been"], [t.ready, "Going"], [withAlpha(t.ink, 0.55), "Dream"], [t.ink, "Home"]] : [[t.go, "Visa-free"], [t.ready, "eVisa"], [t.stop, "Visa needed"], [t.crew, "Been"], [t.ink, "Home"]]).map(([c, l]) => (
             <Row key={l} gap={5}><View style={{ width: 9, height: 9, borderRadius: 3, backgroundColor: c }} /><Muted style={{ fontSize: 12 }}>{l}</Muted></Row>
           ))}
         </Row>
@@ -82,7 +82,7 @@ export default function MyMap() {
           <H2>Passport stamps</H2>
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: 12 }}>
             {been.map((c, i) => {
-              const col = [t.go, t.ready, t.stop, t.crew][i % 4];
+              const col = [t.brandText, t.ink, t.brandText, t.muted][i % 4];
               const p = places.find((x) => x.country === c && x.status === "been");
               return (
                 <View key={c} style={{ width: "30%", aspectRatio: 1, borderRadius: 18, borderWidth: 2, borderStyle: "dashed", borderColor: col, alignItems: "center", justifyContent: "center", transform: [{ rotate: `${((i * 37) % 13) - 6}deg` }] }}>

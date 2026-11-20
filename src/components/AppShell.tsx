@@ -32,7 +32,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const path = usePathname() || "/";
   const router = useRouter();
   const { ready, profile, seenIntro, session, guest } = useApp();
-  const assistantName = profile?.assistantNickname || APP.assistant;
+  const assistantName = APP.assistant;
   const isPersonal = PERSONAL.some((p) => (p === "/" ? path === "/" : path === p || path.startsWith(p + "/")));
 
   useEffect(() => {
@@ -60,16 +60,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         ))}
         {/* The phone app's preview is a separate static app, so use a plain link. */}
         <a href="/app" className="nav-link"><span className="ico" aria-hidden="true">📱</span>Try the app</a>
-        <div className="rail-foot">
-          <Link href="/ask" className="btn btn-sun">✨ Ask {assistantName}</Link>
-        </div>
       </aside>
 
       <header className="topbar">
         <Link href="/" className="logo" style={{ padding: 0 }}><span className="logo-mark">TK</span>{APP.name}</Link>
         <div className="row" style={{ gap: 8 }}>
           <a href="/app" className="btn btn-ghost btn-sm" aria-label="Try the phone app">📱</a>
-          <Link href="/ask" className="btn btn-sun btn-sm">✨ {assistantName}</Link>
           <Link href="/profile" className="btn btn-ghost btn-sm" aria-label="Profile and more">☰</Link>
         </div>
       </header>
@@ -82,6 +78,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
         {ready && !profile?.onboarded && isPersonal ? <div className="muted">Loading…</div> : children}
       </main>
+
+      {!path.startsWith("/ask") && (
+        <Link href="/ask" className="ava-fab" aria-label={`Ask ${assistantName}, your travel assistant`}>
+          <span aria-hidden="true">✨</span><span className="ava-fab-label">{assistantName}</span>
+        </Link>
+      )}
 
       <nav className="tabbar" aria-label="Tabs">
         {TABS.map((n) => (

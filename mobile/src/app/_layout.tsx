@@ -11,10 +11,19 @@ import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { StatusBar } from "expo-status-bar";
 import { useEffect } from "react";
+import { Platform } from "react-native";
 import { AppProvider, useApp } from "@/lib/store";
 import { FONT, useTheme } from "@/theme";
 
 SplashScreen.preventAutoHideAsync().catch(() => {});
+
+// Browser preview only: show country flags on Windows with the Twemoji flag font the website hosts.
+if (Platform.OS === "web" && typeof document !== "undefined" && !document.getElementById("tk-flags")) {
+  const style = document.createElement("style");
+  style.id = "tk-flags";
+  style.textContent = `@font-face{font-family:"Twemoji Country Flags";unicode-range:U+1F1E6-1F1FF,U+1F3F4,U+E0062-E0063,U+E0065,U+E0067,U+E006C,U+E006E,U+E0073-E0074,U+E0077,U+E007F;src:url("/fonts/TwemojiCountryFlags.woff2") format("woff2");font-display:swap}`;
+  document.head.appendChild(style);
+}
 
 function Root() {
   const t = useTheme();

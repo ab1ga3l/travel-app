@@ -1,58 +1,59 @@
 /* ============================================================
-   "Go Signal" design system
-   The app's job is answering "can I go?", and its name means "Let's go!".
-   So the brand colour IS go, and every other colour is a signal that
-   means one thing everywhere:
-     Go lime    #C6F24E  brand, buttons, visa-free, paid, safe
-     Ready amber #FFB23E  prepare first: eVisa, pending, almost there
-     Stop coral  #FF5A5F  visa required, unpaid, SOS
-     Crew violet #9D8CFF  people, community, Aviora
-   Everything else is warm night black and bone white, so the signals pop.
-   Type: Bricolage Grotesque (headings, bold and human), DM Sans (body,
-   clear on small screens), JetBrains Mono (codes, stamps, labels).
+   Design system: black, burgundy and white.
+   Burgundy is the brand: buttons, highlights, your own places.
+   Map and status colours follow traffic lights, so they read instantly:
+     green  = go (visa-free, paid, safe)
+     amber  = get ready first (eVisa, pending)
+     red    = stop (visa needed, unpaid, SOS)
+   Type: Bricolage Grotesque (headings), DM Sans (body), JetBrains Mono (labels).
+   Flags use the Twemoji flag font on Windows, which has no flag emoji.
    ============================================================ */
+@font-face {
+  font-family: "Twemoji Country Flags";
+  unicode-range: U+1F1E6-1F1FF, U+1F3F4, U+E0062-E0063, U+E0065, U+E0067, U+E006C, U+E006E, U+E0073-E0074, U+E0077, U+E007F;
+  src: url("/fonts/TwemojiCountryFlags.woff2") format("woff2");
+  font-display: swap;
+}
 :root {
-  --bg: #0d0d0f;
-  --bg-2: #121215;
-  --surface: #18181c;
-  --surface-2: #222228;
-  --line: #2c2c33;
-  --line-strong: #44444d;
-  --ink: #f4f1ea;
-  --muted: #9c9aa3;
-  --brand: #c6f24e;
-  --brand-text: #c6f24e;
-  --on-brand: #0d0d0f;
-  --indigo: #9d8cff;
-  --sunrise: #ff5a5f;
-  --gold: #ffb23e;
-  --mint: #c6f24e;
-  --lilac: #9d8cff;
-  --danger: #ff5a5f;
-  --on-accent: #0d0d0f;
-  --glass: rgba(18, 18, 21, 0.78);
-  --grad-sun: linear-gradient(120deg, #c6f24e 0%, #ddff7a 100%);
-  --glow: rgba(198, 242, 78, 0.45);
-  --grad-night: radial-gradient(1100px 560px at 85% -10%, rgba(157, 140, 255, 0.16), transparent 60%),
-    radial-gradient(900px 480px at -10% 110%, rgba(198, 242, 78, 0.07), transparent 60%), #0d0d0f;
-  --display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
-  --body: "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --bg: #000000;
+  --bg-2: #0a0a0a;
+  --surface: #111113;
+  --surface-2: #1b1b1e;
+  --line: #26262a;
+  --line-strong: #3a3a40;
+  --ink: #ffffff;
+  --muted: #a3a3ab;
+  --brand: #8b1e3f;
+  --brand-text: #e0577d;
+  --on-brand: #ffffff;
+  --indigo: #e0577d;
+  --sunrise: #ff453a;
+  --gold: #ffb340;
+  --mint: #34c759;
+  --lilac: #e0577d;
+  --danger: #ff453a;
+  --on-accent: #ffffff;
+  --glass: rgba(0, 0, 0, 0.82);
+  --grad-sun: linear-gradient(120deg, #8b1e3f 0%, #b02a52 100%);
+  --glow: rgba(176, 42, 82, 0.5);
+  --grad-night: radial-gradient(1100px 560px at 85% -10%, rgba(139, 30, 63, 0.22), transparent 60%), #000000;
+  --display: "Twemoji Country Flags", "Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --body: "Twemoji Country Flags", "DM Sans", "Segoe UI", system-ui, -apple-system, sans-serif;
   --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
   --r: 20px;
   --r-sm: 14px;
-  --shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.8);
+  --shadow: 0 24px 60px -30px rgba(0, 0, 0, 0.9);
   --nav-h: 72px;
   color-scheme: dark;
 }
 @media (prefers-color-scheme: light) {
   :root {
-    --bg: #f6f3ec; --bg-2: #efebe1; --surface: #ffffff; --surface-2: #f3efe6; --line: #e4dfd4; --line-strong: #cfc8b9;
-    --ink: #111114; --muted: #6b6872; --brand-text: #3f7d0a; --indigo: #5b46d9; --sunrise: #d9363d; --gold: #a66300;
-    --mint: #3f7d0a; --lilac: #5b46d9; --danger: #d9363d; --glass: rgba(246, 243, 236, 0.85);
-    --glow: rgba(120, 170, 20, 0.35);
-    --grad-night: radial-gradient(1100px 560px at 85% -10%, rgba(157, 140, 255, 0.14), transparent 60%),
-      radial-gradient(900px 480px at -10% 110%, rgba(198, 242, 78, 0.18), transparent 60%), #f6f3ec;
-    --shadow: 0 24px 60px -34px rgba(17, 17, 20, 0.28);
+    --bg: #ffffff; --bg-2: #f6f6f7; --surface: #ffffff; --surface-2: #f3f3f5; --line: #e6e6ea; --line-strong: #cfcfd6;
+    --ink: #0a0a0a; --muted: #6b6b73; --brand-text: #8b1e3f; --indigo: #8b1e3f; --sunrise: #d70015; --gold: #b86e00;
+    --mint: #1f9d47; --lilac: #8b1e3f; --danger: #d70015; --glass: rgba(255, 255, 255, 0.88);
+    --glow: rgba(139, 30, 63, 0.3);
+    --grad-night: radial-gradient(1100px 560px at 85% -10%, rgba(139, 30, 63, 0.08), transparent 60%), #ffffff;
+    --shadow: 0 24px 60px -34px rgba(10, 10, 10, 0.25);
     color-scheme: light;
   }
 }
@@ -165,7 +166,7 @@ textarea { min-height: 100px; resize: vertical; }
 
 /* ---------- hero ---------- */
 .hero { position: relative; overflow: hidden; border-radius: 28px; padding: clamp(24px, 4vw, 48px); border: 1px solid var(--line); background: linear-gradient(160deg, color-mix(in srgb, var(--surface) 90%, transparent), color-mix(in srgb, var(--bg) 80%, transparent)); isolation: isolate; }
-.hero::after { content: ""; position: absolute; inset: auto -10% -60% 40%; height: 120%; background: radial-gradient(closest-side, rgba(157, 140, 255, 0.28), transparent); z-index: -1; }
+.hero::after { content: ""; position: absolute; inset: auto -10% -60% 40%; height: 120%; background: radial-gradient(closest-side, rgba(139, 30, 63, 0.3), transparent); z-index: -1; }
 .hero-grid { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr); gap: 32px; align-items: center; }
 @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
 .gradient-text { color: var(--brand-text); }
@@ -253,7 +254,7 @@ textarea { min-height: 100px; resize: vertical; }
 /* ---------- onboarding (full-screen) ---------- */
 .bare { min-height: 100dvh; display: grid; place-items: start center; padding: calc(20px + env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) calc(28px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); }
 .onb { width: 100%; max-width: 560px; display: grid; gap: 22px; }
-.slide-art { position: relative; border-radius: 28px; border: 1px solid var(--line); min-height: 300px; overflow: hidden; display: grid; place-items: center; padding: 20px; background: radial-gradient(500px 260px at 70% 0%, rgba(157, 140, 255, 0.32), transparent 70%), radial-gradient(400px 260px at 0% 100%, rgba(198, 242, 78, 0.18), transparent 70%), var(--surface); isolation: isolate; }
+.slide-art { position: relative; border-radius: 28px; border: 1px solid var(--line); min-height: 300px; overflow: hidden; display: grid; place-items: center; padding: 20px; background: radial-gradient(500px 260px at 70% 0%, rgba(139, 30, 63, 0.35), transparent 70%), var(--surface); isolation: isolate; }
 .slide-art .motif { position: absolute; inset: 0; z-index: -1; opacity: 0.5; }
 .dots { display: flex; gap: 6px; justify-content: center; }
 .dots i { width: 8px; height: 8px; border-radius: 99px; background: var(--line); transition: width 0.2s, background 0.2s; }
@@ -294,3 +295,11 @@ textarea { min-height: 100px; resize: vertical; }
 .choice-grid.tight .choice .big { font-size: 1.5rem; }
 .choice-grid.tight .choice strong { font-size: 0.78rem; line-height: 1.2; }
 @media (min-width: 720px) { .choice-grid.tight { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* Aviora: a floating button on the right, always one tap away. */
+.ava-fab { position: fixed; right: max(18px, env(safe-area-inset-right)); bottom: 24px; z-index: 45; display: inline-flex; align-items: center; gap: 8px; padding: 12px 18px 12px 14px; border-radius: 999px; background: var(--brand); color: var(--on-brand); font-weight: 700; font-family: var(--display); box-shadow: 0 14px 34px -10px var(--glow), 0 0 0 1px color-mix(in srgb, var(--on-brand) 12%, transparent); transition: transform 0.15s; }
+.ava-fab:hover { transform: translateY(-2px); }
+.ava-fab span[aria-hidden] { font-size: 1.15rem; }
+@media (max-width: 900px) {
+  .ava-fab { bottom: calc(var(--nav-h) + 14px + env(safe-area-inset-bottom)); padding: 12px; }
+  .ava-fab-label { display: none; }
+}

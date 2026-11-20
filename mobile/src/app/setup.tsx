@@ -6,12 +6,12 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CountryPicker } from "@/components/CountryPicker";
 import { Button, Chip, Eyebrow, Field, H1, Hi, Label, Muted, Progress, Row, Screen, Tile } from "@/components/ui";
 import { currencyOf } from "@/shared/geo";
-import { APP, ASSISTANT_STYLES, VIBE_PICKS, fromPicks } from "@/shared/site";
+import { VIBE_PICKS, fromPicks } from "@/shared/site";
 import { flag, nameOf } from "@/shared/world";
 import { useApp, type Profile } from "@/lib/store";
 import { useTheme } from "@/theme";
 
-const STEPS = ["About you", "Your vibe", "How you travel", "Your assistant"];
+const STEPS = ["About you", "Your vibe", "How you travel"];
 
 export default function Setup() {
   const t = useTheme();
@@ -26,7 +26,7 @@ export default function Setup() {
   const toggle = (id: string) => setP({ ...p, picks: picks.includes(id) ? picks.filter((x) => x !== id) : [...picks, id] });
 
   const finish = () => {
-    saveProfile({ ...p, ...fromPicks(picks), home, currency: currencyOf(home), onboarded: true, assistantNickname: p.assistantNickname?.trim() || undefined });
+    saveProfile({ ...p, ...fromPicks(picks), home, currency: currencyOf(home), onboarded: true, assistantNickname: undefined });
     setTimeout(() => router.push("/trip/new"), 50);
   };
 
@@ -42,7 +42,7 @@ export default function Setup() {
           <View style={{ gap: 18 }}>
             <H1>Who&apos;s <Hi>travelling?</Hi></H1>
             {session?.user.phone || session?.user.email ? <Muted>Signed in as {session.user.phone ? `+${session.user.phone}` : session.user.email}</Muted> : null}
-            <Field label="Your name" value={p.name} onChangeText={(name) => setP({ ...p, name })} placeholder="First name" autoComplete="given-name" textContentType="givenName" maxLength={40} />
+            <Field label="Your full name" value={p.name} onChangeText={(name) => setP({ ...p, name })} placeholder="e.g. Amina Wanjiru" autoComplete="name" textContentType="name" autoCapitalize="words" maxLength={60} />
             <CountryPicker label="Where are you from? (your passport)" value={p.passport} onChange={(passport) => setP({ ...p, passport })} />
             <View style={{ gap: 8 }}>
               <Label>Where do you live now?</Label>
@@ -67,23 +67,13 @@ export default function Setup() {
 
         {step === 2 && (
           <View style={{ gap: 18 }}>
-            <H1>How do you <Hi>roll?</Hi></H1>
+            <H1>How do you like to <Hi>travel?</Hi></H1>
             <Group label="Budget" value={p.budget} onChange={(budget) => setP({ ...p, budget: budget as Profile["budget"] })} options={[["backpacker", "🎒", "Backpacker"], ["comfy", "🛋️", "Comfy"], ["treat", "🥂", "Treat myself"]]} />
             <Group label="Usually with" value={p.company} onChange={(company) => setP({ ...p, company: company as Profile["company"] })} options={[["solo", "🧍🏾", "Solo"], ["couple", "💑", "Partner"], ["friends", "👯", "Friends"], ["family", "👨‍👩‍👧", "Family"]]} />
             <Group label="Pace" value={p.pace} onChange={(pace) => setP({ ...p, pace: pace as Profile["pace"] })} options={[["slow", "🐢", "Slow"], ["balanced", "⚖️", "Balanced"], ["packed", "⚡", "Pack it in"]]} />
           </View>
         )}
 
-        {step === 3 && (
-          <View style={{ gap: 16 }}>
-            <H1>Meet <Hi>{p.assistantNickname?.trim() || APP.assistant}</Hi>, your travel buddy</H1>
-            <Muted>Ask about visas, budgets, where to go and what to do. How should it talk to you?</Muted>
-            <View style={{ flexDirection: "row", gap: 8 }}>
-              {ASSISTANT_STYLES.map((s) => <Tile key={s.id} emoji={s.emoji} label={s.label} hint={s.hint} on={p.assistantStyle === s.id} onPress={() => setP({ ...p, assistantStyle: s.id })} style={{ flex: 1, minHeight: 120 }} />)}
-            </View>
-            <Field label="Give it a nickname (optional)" value={p.assistantNickname ?? ""} onChangeText={(assistantNickname) => setP({ ...p, assistantNickname })} placeholder={APP.assistant} maxLength={20} />
-          </View>
-        )}
       </Screen>
 
       <View style={{ position: "absolute", left: 0, right: 0, bottom: 0, flexDirection: "row", justifyContent: "space-between", paddingHorizontal: 18, paddingTop: 12, paddingBottom: insets.bottom + 14, backgroundColor: t.glass, borderTopWidth: 1, borderTopColor: t.line }}>

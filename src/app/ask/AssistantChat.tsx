@@ -10,7 +10,7 @@ type Turn = { role: "user" | "assistant"; content: string };
 export function AssistantChat() {
   const sp = useSearchParams();
   const { profile } = useApp();
-  const nick = profile?.assistantNickname || APP.assistant;
+  const nick = APP.assistant;
   const [turns, setTurns] = useState<Turn[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -35,7 +35,7 @@ export function AssistantChat() {
     try {
       const res = await fetch("/api/chat", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: next, profile: profile ? { name: profile.name, passport: profile.passport, home: profile.home, vibes: profile.vibes, interests: profile.interests, budget: profile.budget, company: profile.company, pace: profile.pace, assistantStyle: profile.assistantStyle, assistantNickname: profile.assistantNickname } : undefined }),
+        body: JSON.stringify({ messages: next, profile: profile ? { name: profile.name, passport: profile.passport, home: profile.home, vibes: profile.vibes, interests: profile.interests, budget: profile.budget, company: profile.company, pace: profile.pace, assistantStyle: profile.assistantStyle } : undefined }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || "Something went wrong.");
