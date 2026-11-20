@@ -1,12 +1,9 @@
-// Generated country "poster": a gradient sky plus an adire-inspired motif (concentric circles,
-// dots and lines, like resist-dyed cloth). Every country gets its own variation; no photos needed.
+// Generated country "poster": a night card with a soft glow, thin contour rings
+// (like a map, or the circles of adire cloth) and a lime dashed route: "you can go".
+// Calm on purpose: one quiet tint per region, the lime route is the only bright thing.
 import { flag } from "@/lib/world";
 
-const PALETTES: Record<string, [string, string, string]> = {
-  africa: ["#ff8a3d", "#ffb23e", "#2a1530"],
-  asia: ["#5ad1c9", "#9d8cff", "#101828"],
-  europe: ["#9d8cff", "#ff5a5f", "#16121f"],
-};
+const TINT: Record<string, string> = { africa: "#ff8a3d", asia: "#5ad1c9", europe: "#9d8cff" };
 
 function seed(s: string) {
   let h = 2166136261;
@@ -15,31 +12,34 @@ function seed(s: string) {
 }
 
 export function PosterArt({ code, region, id }: { code: string; region: string; id?: string }) {
-  const [a, b, night] = PALETTES[region] ?? PALETTES.africa;
+  const tint = TINT[region] ?? TINT.africa;
   const r = seed(code);
-  const cx = 60 + r() * 80;
-  const cy = 30 + r() * 50;
-  const rings = 3 + Math.floor(r() * 3);
-  const gid = `g-${id ?? code}`;
-  const dots = Array.from({ length: 26 }, (_, i) => ({ x: (i % 13) * 16 + 4, y: 150 + Math.floor(i / 13) * 14 + (i % 2) * 4 }));
+  const cx = 110 + r() * 70;
+  const cy = 20 + r() * 60;
+  const rings = 6;
+  const uid = (id ?? code).replace(/[^a-zA-Z0-9-]/g, "");
+  const y1 = 150 + r() * 25, y2 = 95 + r() * 30, y3 = 60 + r() * 30;
   return (
     <svg className="p-art" viewBox="0 0 200 200" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
       <defs>
-        <linearGradient id={gid} x1="0" y1="0" x2="0.4" y2="1">
-          <stop offset="0" stopColor={b} />
-          <stop offset="0.55" stopColor={a} />
-          <stop offset="1" stopColor={night} />
+        <linearGradient id={`bg-${uid}`} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stopColor="#1e1e24" />
+          <stop offset="1" stopColor="#0f0f12" />
         </linearGradient>
+        <radialGradient id={`gl-${uid}`} cx={cx / 200} cy={cy / 200} r="0.75">
+          <stop offset="0" stopColor={tint} stopOpacity="0.3" />
+          <stop offset="0.6" stopColor={tint} stopOpacity="0.06" />
+          <stop offset="1" stopColor={tint} stopOpacity="0" />
+        </radialGradient>
       </defs>
-      <rect width="200" height="200" fill={`url(#${gid})`} />
+      <rect width="200" height="200" fill={`url(#bg-${uid})`} />
+      <rect width="200" height="200" fill={`url(#gl-${uid})`} />
       {Array.from({ length: rings }, (_, i) => (
-        <circle key={i} cx={cx} cy={cy} r={14 + i * 13} fill="none" stroke="#fff" strokeOpacity={0.22 - i * 0.03} strokeWidth={i === 0 ? 10 : 2} />
+        <circle key={i} cx={cx} cy={cy} r={12 + i * 16} fill="none" stroke="#f4f1ea" strokeOpacity={0.14 - i * 0.018} strokeWidth="0.8" />
       ))}
-      <path d={`M0 ${120 + r() * 20} Q 60 ${100 + r() * 20} 100 ${125 + r() * 10} T 200 ${115 + r() * 20} V200 H0Z`} fill={night} fillOpacity="0.55" />
-      {dots.map((d, i) => (
-        <circle key={i} cx={d.x} cy={d.y} r={1.6} fill="#fff" fillOpacity="0.35" />
-      ))}
-      <path d="M0 186 H200" stroke="#fff" strokeOpacity="0.2" strokeDasharray="6 5" />
+      <path d={`M-5 ${y1} C 50 ${y1 - 10}, 60 ${y2 + 20}, 100 ${y2} S 150 ${y3 + 10}, ${cx} ${cy}`} fill="none" stroke="#c6f24e" strokeOpacity="0.75" strokeWidth="1.4" strokeDasharray="4 4" strokeLinecap="round" />
+      <circle cx={cx} cy={cy} r="3.2" fill="#c6f24e" />
+      <circle cx={cx} cy={cy} r="7" fill="none" stroke="#c6f24e" strokeOpacity="0.35" />
     </svg>
   );
 }

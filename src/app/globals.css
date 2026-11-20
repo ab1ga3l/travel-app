@@ -171,12 +171,12 @@ textarea { min-height: 100px; resize: vertical; }
 .gradient-text { color: var(--brand-text); }
 
 /* ---------- posters (country art) ---------- */
-.poster { position: relative; border-radius: var(--r); overflow: hidden; min-height: 190px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; color: #fff; isolation: isolate; }
-.poster .p-name { font-family: var(--display); font-weight: 700; font-size: 1.5rem; line-height: 1; letter-spacing: -0.02em; text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35); }
+.poster { position: relative; border-radius: var(--r); overflow: hidden; min-height: 190px; padding: 16px; display: flex; flex-direction: column; justify-content: space-between; color: #f4f1ea; isolation: isolate; background: #0f0f12; }
+.poster .p-name { font-family: var(--display); font-weight: 800; font-size: 1.55rem; line-height: 1; letter-spacing: -0.03em; }
 .poster .p-art { position: absolute; inset: 0; z-index: -1; }
 .poster .p-top { display: flex; justify-content: space-between; align-items: start; gap: 8px; }
 .poster .p-flag { font-size: 1.6rem; filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.3)); }
-.glass-pill { background: rgba(11, 16, 38, 0.55); backdrop-filter: blur(8px); color: #fff; border-radius: 999px; padding: 4px 10px; font-size: 0.72rem; font-weight: 700; }
+.glass-pill { background: rgba(244, 241, 234, 0.1); border: 1px solid rgba(244, 241, 234, 0.14); backdrop-filter: blur(8px); color: #f4f1ea; border-radius: 999px; padding: 4px 10px; font-size: 0.72rem; font-weight: 700; }
 
 /* ---------- months ---------- */
 .months { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 3px; }
