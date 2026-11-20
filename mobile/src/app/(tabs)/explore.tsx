@@ -5,6 +5,7 @@ import { Pressable, Text, View } from "react-native";
 import { Poster } from "@/components/Poster";
 import { Badge, Chip, Empty, Eyebrow, Field, H1, Hi, Muted, Row, Screen, Segments, tap } from "@/components/ui";
 import { useApp, useVisaRow } from "@/lib/store";
+import { useMoney } from "@/lib/useMoney";
 import { COUNTRIES } from "@/shared/countries";
 import { EXTRAS } from "@/shared/countryExtras";
 import { GEMS } from "@/shared/gems";
@@ -18,6 +19,7 @@ type Region = "all" | "africa" | "asia" | "europe";
 export default function Explore() {
   const { profile } = useApp();
   const row = useVisaRow(profile?.passport);
+  const { usd } = useMoney();
   const [what, setWhat] = useState<"countries" | "gems">("countries");
   const [q, setQ] = useState("");
   const [vibe, setVibe] = useState<Vibe | null>(null);
@@ -58,7 +60,7 @@ export default function Explore() {
           const great = c.bestMonths.includes(month);
           return (
             <Pressable key={c.code} onPress={() => { tap(); router.push(`/country/${c.code}`); }}>
-              <Poster code={c.code} region={c.region} title={c.name} pill={`$${c.dailyBudget[1]}/day`} height={200}
+              <Poster code={c.code} region={c.region} title={c.name} pill={`${usd(c.dailyBudget[1])}/day`} height={200}
                 sub={<View style={{ gap: 8 }}>
                   <Text numberOfLines={2} style={{ fontFamily: FONT.body, fontSize: 13.5, color: "rgba(244,241,234,0.82)" }}>{EXTRAS[c.code]?.tagline}</Text>
                   <Row gap={6}><Badge label={v.label} t={v.tone} onDark />{great && <Badge label="☀️ Great this month" t="easy" onDark />}</Row>
@@ -77,7 +79,7 @@ export default function Explore() {
           </Pressable>
         ))
       )}
-      <Muted style={{ fontSize: 12 }}>Prices are typical daily mid-range budgets in USD.</Muted>
+      <Muted style={{ fontSize: 12 }}>Prices are typical daily mid-range budgets per person, converted at today&apos;s rate.</Muted>
     </Screen>
   );
 }

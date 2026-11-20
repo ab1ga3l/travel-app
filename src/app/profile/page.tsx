@@ -3,6 +3,8 @@ import Link from "next/link";
 import { useState } from "react";
 import { APP, ASSISTANT_STYLES, VIBE_PICKS, fromPicks, picksFrom } from "@/lib/site";
 import { useApp } from "@/lib/store";
+import { currencyOf } from "@/lib/geo";
+import { CurrencySelect } from "@/components/Money";
 import { cloudEnabled } from "@/lib/supabaseBrowser";
 import { flag, nameOf } from "@/lib/world";
 
@@ -32,7 +34,7 @@ export default function ProfilePage() {
         <div className="ledger">
           <div className="ledger-row"><span className="muted">Passport</span><span>{flag(profile.passport)} {nameOf(profile.passport)}</span></div>
           {profile.home && profile.home !== profile.passport && <div className="ledger-row"><span className="muted">Lives in</span><span>{flag(profile.home)} {nameOf(profile.home)}</span></div>}
-          <div className="ledger-row"><span className="muted">Currency</span><span>{profile.currency ?? "USD"}</span></div>
+          <div className="ledger-row"><label className="muted" htmlFor="pcur">Currency</label><span style={{ minWidth: 220 }}><CurrencySelect id="pcur" value={profile.currency ?? currencyOf(profile.home ?? profile.passport)} onChange={(c) => saveProfile({ ...profile, currency: c })} /></span></div>
           <div className="ledger-row"><span className="muted">Budget · company · pace</span><span>{profile.budget} · {profile.company} · {profile.pace}</span></div>
           <div className="ledger-row"><span className="muted">Trips · places on map</span><span>{tripDocs.length} · {places.filter((p) => p.status === "been").length} been</span></div>
         </div>

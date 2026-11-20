@@ -3,6 +3,9 @@ import { Text, View } from "react-native";
 import { Badge, Between, Body, Button, Card, Chip, Field, H3, Muted, Progress, Row, Stat, Strong } from "@/components/ui";
 import { useApp } from "@/lib/store";
 import { payMethodsOf } from "@/shared/geo";
+import { convertTrip } from "@/shared/money";
+import { useMoney } from "@/lib/useMoney";
+import { CurrencyPicker } from "@/components/CurrencyPicker";
 import { potRaised, potShare, potSpent } from "@/shared/tripTypes";
 import { FONT, useTheme } from "@/theme";
 import { type TabProps, memberName, money, openWhatsApp, uid } from "./shared";
@@ -12,6 +15,7 @@ const CATS = ["Stay", "Transport", "Food", "Activities", "Shopping", "Other"];
 export function PotTab({ trip, me, canManage, update }: TabProps) {
   const t = useTheme();
   const { profile } = useApp();
+  const { rates } = useMoney();
   const methods = payMethodsOf(profile?.home ?? profile?.passport ?? "KE");
   const raised = potRaised(trip), spent = potSpent(trip);
   const share = potShare(trip);
@@ -111,6 +115,13 @@ export function PotTab({ trip, me, canManage, update }: TabProps) {
       {canManage && (
         <Card style={{ gap: 12 }}>
           <H3>Pot settings</H3>
+          <CurrencyPicker label="Trip currency" value={trip.currency} hint="Every amount in the trip converts at today's rate." onChange={(c) => {
+            const next = convertTrip(trip, c, rates);
+            if (!next) { setMsg("Exchange rates aren't available offline. Try again when you're connected."); return; }
+            update(() => next);
+            setCfg({ ...cfg, target: String(next.pot.target || "") });
+            setMsg(`Converted everything to ${c}.`);
+          }} />
           <Field label={`Target (${trip.currency})`} value={cfg.target} onChangeText={(target) => setCfg({ ...cfg, target: target.replace(/\D/g, "") })} keyboardType="number-pad" />
           <Field label="Where to send money" value={cfg.payTo} onChangeText={(payTo) => setCfg({ ...cfg, payTo })} placeholder="M-Pesa 0712 345 678 (Amina)" />
           <Field label="Note for the crew" value={cfg.payNote} onChangeText={(payNote) => setCfg({ ...cfg, payNote })} placeholder="Pay by 1 Dec, use your name as reference" />

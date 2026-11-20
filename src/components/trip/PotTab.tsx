@@ -1,6 +1,9 @@
 "use client";
 import { useState } from "react";
 import { payMethodsOf } from "@/lib/geo";
+import { convertTrip } from "@/lib/money";
+import { useMoney } from "@/lib/useMoney";
+import { CurrencySelect } from "../Money";
 import { useApp } from "@/lib/store";
 import { potRaised, potShare, potSpent } from "@/lib/tripTypes";
 import { type TabProps, memberName, money, uid, waLink } from "./shared";
@@ -9,6 +12,7 @@ const CATS = ["Stay", "Transport", "Food", "Activities", "Shopping", "Other"];
 
 export function PotTab({ trip, me, canManage, update }: TabProps) {
   const { profile } = useApp();
+  const { rates } = useMoney();
   const methods = payMethodsOf(profile?.home ?? profile?.passport ?? "KE");
   const raised = potRaised(trip);
   const spent = potSpent(trip);
@@ -122,6 +126,15 @@ export function PotTab({ trip, me, canManage, update }: TabProps) {
       {canManage && (
         <section className="card" style={{ gap: 12 }}>
           <h3>Pot settings</h3>
+          <div><label className="lbl" htmlFor="tcur">Trip currency</label>
+            <CurrencySelect id="tcur" value={trip.currency} onChange={(c) => {
+              const next = convertTrip(trip, c, rates);
+              if (!next) { setMsg("Exchange rates aren't available offline. Try again when you're connected."); return; }
+              update(() => next);
+              setSettings({ ...settings, target: String(next.pot.target || "") });
+              setMsg(`Converted everything to ${c}.`);
+            }} />
+            <span className="muted" style={{ fontSize: "0.8rem" }}>Every amount in the trip converts at today&apos;s rate.</span></div>
           <div className="field-row">
             <div><label className="lbl" htmlFor="st">Target ({trip.currency})</label><input id="st" type="number" min={0} value={settings.target} onChange={(e) => setSettings({ ...settings, target: e.target.value })} /></div>
             <div><label className="lbl" htmlFor="sp">Where to send money</label><input id="sp" maxLength={60} value={settings.payTo} onChange={(e) => setSettings({ ...settings, payTo: e.target.value })} placeholder="M-Pesa 0712 345 678 (Amina)" /></div>

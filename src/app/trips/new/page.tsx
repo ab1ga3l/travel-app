@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useState } from "react";
 import { APP } from "@/lib/site";
 import { useApp } from "@/lib/store";
+import { currencyFor } from "@/lib/money";
 import { buildTrip, type TripAnswers } from "@/lib/tripBuild";
 import { tripFromPlan, tripFromText, type AiPlan } from "@/lib/tripText";
 import { WORLD, flag, nameOf } from "@/lib/world";
@@ -32,7 +33,7 @@ function NewTrip() {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
   const [manual, setManual] = useState(sp.get("mode") === "manual");
-  const [a, setA] = useState<TripAnswers>({ country: sp.get("country")?.toUpperCase() ?? "", vibes: profile?.vibes ?? [], occasion: "none", company: profile?.company ?? "friends", people: 2, budgetPerPerson: 0, currency: profile?.currency ?? "USD" });
+  const [a, setA] = useState<TripAnswers>({ country: sp.get("country")?.toUpperCase() ?? "", vibes: profile?.vibes ?? [], occasion: "none", company: profile?.company ?? "friends", people: 2, budgetPerPerson: 0, currency: profile ? currencyFor(profile) : "USD" });
 
   if (!profile) return <div className="muted">Loading…</div>;
 
@@ -43,7 +44,7 @@ function NewTrip() {
     try {
       const r = await fetch("/api/plan-trip", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ text, currency: profile.currency ?? "USD", passport: profile.passport, home: profile.home, vibes: profile.vibes, budget: profile.budget, pace: profile.pace }),
+        body: JSON.stringify({ text, currency: currencyFor(profile), passport: profile.passport, home: profile.home, vibes: profile.vibes, budget: profile.budget, pace: profile.pace }),
       });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.plan?.country_code) trip = tripFromPlan(j.plan as AiPlan, profile, session?.user.id);

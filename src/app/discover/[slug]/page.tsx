@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { Usd } from "@/components/Money";
 import { GemCard } from "@/components/Cards";
 import { ThingsToDo, TripButtons, VisaPanel } from "@/components/CountryClient";
 import { MonthStrip, monthName } from "@/components/MonthStrip";
@@ -111,9 +112,9 @@ export default async function CountryPage({ params }: { params: Promise<{ slug: 
           <div className="card">
             <span className="eyebrow">Daily budget per person</span>
             <div className="ledger">
-              <div className="ledger-row"><span className="muted">🎒 Backpacker</span><span>${c.dailyBudget[0]}</span></div>
-              <div className="ledger-row"><span className="muted">🛋️ Comfy</span><span>${c.dailyBudget[1]}</span></div>
-              <div className="ledger-row"><span className="muted">🥂 Treat yourself</span><span>${c.dailyBudget[2]}</span></div>
+              <div className="ledger-row"><span className="muted">🎒 Backpacker</span><span><Usd n={c.dailyBudget[0]} /></span></div>
+              <div className="ledger-row"><span className="muted">🛋️ Comfy</span><span><Usd n={c.dailyBudget[1]} /></span></div>
+              <div className="ledger-row"><span className="muted">🥂 Treat yourself</span><span><Usd n={c.dailyBudget[2]} /></span></div>
             </div>
             <p className="muted" style={{ fontSize: "0.8rem" }}>Food, local transport and a room. Flights, safaris and permits are extra.</p>
           </div>

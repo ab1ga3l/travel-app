@@ -2,6 +2,7 @@
 import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { currencyOf } from "@/lib/geo";
+import { CurrencySelect } from "@/components/Money";
 import { VIBE_PICKS, fromPicks, picksFrom } from "@/lib/site";
 import { useApp, type Profile } from "@/lib/store";
 import { WORLD, flag, nameOf } from "@/lib/world";
@@ -65,6 +66,8 @@ function Setup() {
             </div>
             {diaspora && <CountrySelect id="home" value={p.home ?? "GB"} onChange={(v) => setP({ ...p, home: v, currency: undefined })} />}
           </div>
+          <div><label className="lbl" htmlFor="cur">Your currency</label><CurrencySelect id="cur" value={currency} onChange={(c) => setP({ ...p, currency: c })} />
+            <span className="muted" style={{ fontSize: "0.8rem" }}>Set from where you live. Prices and budgets show in this.</span></div>
         </section>
       )}
 

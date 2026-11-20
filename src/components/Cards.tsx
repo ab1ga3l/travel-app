@@ -9,6 +9,7 @@ import { useApp } from "@/lib/store";
 import { nameOf } from "@/lib/world";
 import { MatchRing, VisaBadgeFor } from "./bits";
 import { MonthStrip } from "./MonthStrip";
+import { Usd } from "./Money";
 import { Poster, PosterArt } from "./Poster";
 
 export function CountryCard({ c, width }: { c: Country; width?: number }) {
@@ -16,7 +17,7 @@ export function CountryCard({ c, width }: { c: Country; width?: number }) {
   const ex = EXTRAS[c.code];
   return (
     <Link href={`/discover/${c.slug}`} className="card hover-lift" style={{ padding: 10, gap: 10, width }}>
-      <Poster code={c.code} name={c.name} region={c.region} height={170} topRight={<span className="glass-pill">${c.dailyBudget[1]}/day</span>} />
+      <Poster code={c.code} name={c.name} region={c.region} height={170} topRight={<span className="glass-pill"><Usd n={c.dailyBudget[1]} suffix="/day" /></span>} />
       <div className="stack" style={{ gap: 8, padding: "2px 6px 6px" }}>
         <div className="between" style={{ gap: 8 }}>
           <VisaBadgeFor code={c.code} compact />

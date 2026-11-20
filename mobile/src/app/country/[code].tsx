@@ -4,6 +4,7 @@ import { Text, View } from "react-native";
 import { Poster } from "@/components/Poster";
 import { Badge, Between, Body, Button, Card, Empty, H2, H3, Muted, Row, Screen, Stat, Strong } from "@/components/ui";
 import { useApp, useVisaRow } from "@/lib/store";
+import { useMoney } from "@/lib/useMoney";
 import { countryByCode } from "@/shared/countries";
 import { EXTRAS } from "@/shared/countryExtras";
 import { gemsFor } from "@/shared/gems";
@@ -19,6 +20,7 @@ export default function CountryScreen() {
   const cc = code.toUpperCase();
   const { profile } = useApp();
   const row = useVisaRow(profile?.passport);
+  const { usd } = useMoney();
   const c = countryByCode(cc);
   const ex = EXTRAS[cc];
   const v = visaLabel(row[cc] as VisaCode);
@@ -38,7 +40,7 @@ export default function CountryScreen() {
   return (
     <Screen header padBottom={60}>
       <Stack.Screen options={{ title: c.name }} />
-      <Poster code={cc} region={c.region} title={c.name} pill={`$${c.dailyBudget[1]}/day`} height={200}
+      <Poster code={cc} region={c.region} title={c.name} pill={`${usd(c.dailyBudget[1])}/day`} height={200}
         sub={ex ? <Text style={{ fontFamily: FONT.body, fontSize: 13.5, color: "rgba(244,241,234,0.85)" }}>{ex.tagline}</Text> : undefined} />
       {profile && cc !== profile.passport && (
         <Card glow style={{ gap: 8 }}>
@@ -66,9 +68,9 @@ export default function CountryScreen() {
 
       <H2>Money</H2>
       <Row gap={10}>
-        <Stat value={`$${c.dailyBudget[0]}`} label="backpacker / day" />
-        <Stat value={`$${c.dailyBudget[1]}`} label="comfy / day" color={t.go} />
-        <Stat value={`$${c.dailyBudget[2]}`} label="treat / day" />
+        <Stat value={usd(c.dailyBudget[0])} label="backpacker / day" />
+        <Stat value={usd(c.dailyBudget[1])} label="comfy / day" color={t.go} />
+        <Stat value={usd(c.dailyBudget[2])} label="treat / day" />
       </Row>
       <Card style={{ gap: 6 }}><Strong>💳 {c.currency}</Strong><Body>{c.moneyTip}</Body><Muted style={{ fontSize: 13 }}>🗣️ {c.languages} · 🔌 Plug type {c.plugs} · 🏛️ {c.capital}</Muted></Card>
 
@@ -104,7 +106,7 @@ export default function CountryScreen() {
           </Card>
           <H2>Could you live here?</H2>
           <Card style={{ gap: 8 }}>
-            <Between><Strong>Typical monthly cost</Strong><Strong style={{ color: t.brandText }}>${ex.living.monthlyUSD.toLocaleString()}</Strong></Between>
+            <Between><Strong>Typical monthly cost</Strong><Strong style={{ color: t.brandText }}>{usd(ex.living.monthlyUSD)}</Strong></Between>
             <Body>{ex.living.note}</Body>
             {ex.living.routes.map((r) => <Body key={r}>•  {r}</Body>)}
             <Muted style={{ fontSize: 12 }}>Routes are real programmes as of November 2026. Confirm on the official immigration site.</Muted>

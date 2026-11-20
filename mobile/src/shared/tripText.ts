@@ -3,6 +3,7 @@
 // Aviora (on the server) writes the whole plan; when she can't be reached, quickParse reads the
 // basics straight from the text so creating a trip always works, even offline.
 import { COUNTRIES } from "./countries";
+import { currencyFor } from "./money";
 import { WORLD } from "./world";
 import type { Occasion, Vibe } from "./site";
 import { buildTrip, tripDays, type TripAnswers } from "./tripBuild";
@@ -64,7 +65,7 @@ export function quickParse(text: string, profile: Profile): TripAnswers {
   const vibes = VIBE_WORDS.filter(([, re]) => re.test(t)).map(([v]) => v);
   return {
     country, vibes: vibes.length ? vibes : profile.vibes, occasion, company, people,
-    month: mIdx >= 0 ? mIdx + 1 : undefined, budgetPerPerson: money[0] ?? 0, currency: profile.currency ?? "USD",
+    month: mIdx >= 0 ? mIdx + 1 : undefined, budgetPerPerson: money[0] ?? 0, currency: currencyFor(profile),
   };
 }
 
@@ -73,7 +74,7 @@ export function tripFromPlan(plan: AiPlan, profile: Profile, ownerUserId?: strin
   const answers: TripAnswers = {
     name: plan.trip_name, country: plan.country_code.toUpperCase(), vibes: plan.vibes, occasion: plan.occasion, company: plan.company,
     people: Math.max(1, plan.people), start: plan.start || undefined, end: plan.end || undefined, month: plan.month > 0 ? plan.month : undefined,
-    budgetPerPerson: Math.max(0, Math.round(plan.budget_per_person)), currency: profile.currency ?? "USD", friends: plan.friends,
+    budgetPerPerson: Math.max(0, Math.round(plan.budget_per_person)), currency: currencyFor(profile), friends: plan.friends,
   };
   const trip = buildTrip(answers, profile, ownerUserId);
   let n = 0;

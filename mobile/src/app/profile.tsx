@@ -2,6 +2,8 @@ import { router } from "expo-router";
 import { Alert, Platform, Switch, View } from "react-native";
 import { Between, Body, Button, Card, Chip, H1, H3, Hi, Muted, Row, Screen, Strong, Tile } from "@/components/ui";
 import { useApp } from "@/lib/store";
+import { CurrencyPicker } from "@/components/CurrencyPicker";
+import { currencyOf } from "@/shared/geo";
 import { cloudEnabled } from "@/lib/supabase";
 import { APP, ASSISTANT_STYLES, VIBE_PICKS, fromPicks, picksFrom } from "@/shared/site";
 import { flag, nameOf } from "@/shared/world";
@@ -26,9 +28,12 @@ export default function Profile() {
       <H1>Hey, <Hi>{profile.name.split(" ")[0] || "traveller"}</Hi></H1>
       <Card style={{ gap: 10 }}>
         <Between><H3>About you</H3><Button label="Edit" kind="soft" small onPress={() => { saveProfile({ ...profile, onboarded: false }); }} /></Between>
-        {[["Passport", `${flag(profile.passport)} ${nameOf(profile.passport)}`], ...(profile.home && profile.home !== profile.passport ? [["Lives in", `${flag(profile.home)} ${nameOf(profile.home)}`]] : []), ["Currency", profile.currency ?? "USD"], ["Style", `${profile.budget} · ${profile.company} · ${profile.pace}`], ["Trips · map", `${tripDocs.length} trips · ${places.filter((p) => p.status === "been").length} countries`]].map(([k, v]) => (
+        {[["Passport", `${flag(profile.passport)} ${nameOf(profile.passport)}`], ...(profile.home && profile.home !== profile.passport ? [["Lives in", `${flag(profile.home)} ${nameOf(profile.home)}`]] : []), ["Style", `${profile.budget} · ${profile.company} · ${profile.pace}`], ["Trips · map", `${tripDocs.length} trips · ${places.filter((p) => p.status === "been").length} countries`]].map(([k, v]) => (
           <Between key={k}><Muted>{k}</Muted><Strong>{v}</Strong></Between>
         ))}
+      </Card>
+      <Card style={{ gap: 10 }}>
+        <CurrencyPicker label="Your currency" value={profile.currency ?? currencyOf(profile.home ?? profile.passport)} onChange={(c) => saveProfile({ ...profile, currency: c })} hint="Prices and budgets show in this. Each trip can use its own currency too." />
       </Card>
       <Card style={{ gap: 12 }}>
         <H3>Your vibe</H3>

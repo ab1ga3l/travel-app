@@ -7,6 +7,7 @@ import { CountryPicker } from "@/components/CountryPicker";
 import { DateField } from "@/components/DateField";
 import { Button, Card, Eyebrow, Field, H1, Hi, Label, Muted, Row, Screen, tap } from "@/components/ui";
 import { useApp } from "@/lib/store";
+import { currencyFor } from "@/shared/money";
 import { API_URL, apiReady } from "@/lib/supabase";
 import { APP } from "@/shared/site";
 import { buildTrip, type TripAnswers } from "@/shared/tripBuild";
@@ -30,7 +31,7 @@ export default function NewTrip() {
   const [busy, setBusy] = useState(false);
   const [msg, setMsg] = useState("");
   const [manual, setManual] = useState(false);
-  const [a, setA] = useState<TripAnswers>({ country: q.country?.toUpperCase() ?? "", vibes: profile?.vibes ?? [], occasion: "none", company: profile?.company ?? "friends", people: 2, budgetPerPerson: 0, currency: profile?.currency ?? "USD" });
+  const [a, setA] = useState<TripAnswers>({ country: q.country?.toUpperCase() ?? "", vibes: profile?.vibes ?? [], occasion: "none", company: profile?.company ?? "friends", people: 2, budgetPerPerson: 0, currency: profile ? currencyFor(profile) : "USD" });
   if (!profile) return null;
 
   const build = async () => {
@@ -41,7 +42,7 @@ export default function NewTrip() {
       try {
         const r = await fetch(`${API_URL}/api/plan-trip`, {
           method: "POST", headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ text, currency: profile.currency ?? "USD", passport: profile.passport, home: profile.home, vibes: profile.vibes, budget: profile.budget, pace: profile.pace }),
+          body: JSON.stringify({ text, currency: currencyFor(profile), passport: profile.passport, home: profile.home, vibes: profile.vibes, budget: profile.budget, pace: profile.pace }),
         });
         const j = await r.json().catch(() => ({}));
         if (r.ok && j.plan?.country_code) trip = tripFromPlan(j.plan as AiPlan, profile, session?.user.id);

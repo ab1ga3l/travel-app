@@ -4,6 +4,7 @@ import { useState } from "react";
 import { KeyboardAvoidingView, Platform, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { CountryPicker } from "@/components/CountryPicker";
+import { CurrencyPicker } from "@/components/CurrencyPicker";
 import { Button, Chip, Eyebrow, Field, H1, Hi, Label, Muted, Progress, Row, Screen, Tile } from "@/components/ui";
 import { currencyOf } from "@/shared/geo";
 import { VIBE_PICKS, fromPicks } from "@/shared/site";
@@ -22,11 +23,12 @@ export default function Setup() {
   const [abroad, setAbroad] = useState(!!profile?.home && profile.home !== profile.passport);
   const picks = p.picks ?? [];
   const home = abroad ? p.home ?? "GB" : p.passport;
+  const currency = p.currency ?? currencyOf(home);
   const can = step === 0 ? p.name.trim().length > 0 : step === 1 ? picks.length > 0 : true;
   const toggle = (id: string) => setP({ ...p, picks: picks.includes(id) ? picks.filter((x) => x !== id) : [...picks, id] });
 
   const finish = () => {
-    saveProfile({ ...p, ...fromPicks(picks), home, currency: currencyOf(home), onboarded: true, assistantNickname: undefined });
+    saveProfile({ ...p, ...fromPicks(picks), home, currency, onboarded: true, assistantNickname: undefined });
     setTimeout(() => router.push("/trip/new"), 50);
   };
 
@@ -43,15 +45,16 @@ export default function Setup() {
             <H1>Who&apos;s <Hi>travelling?</Hi></H1>
             {session?.user.phone || session?.user.email ? <Muted>Signed in as {session.user.phone ? `+${session.user.phone}` : session.user.email}</Muted> : null}
             <Field label="Your full name" value={p.name} onChangeText={(name) => setP({ ...p, name })} placeholder="e.g. Amina Wanjiru" autoComplete="name" textContentType="name" autoCapitalize="words" maxLength={60} />
-            <CountryPicker label="Where are you from? (your passport)" value={p.passport} onChange={(passport) => setP({ ...p, passport })} />
+            <CountryPicker label="Where are you from? (your passport)" value={p.passport} onChange={(passport) => setP({ ...p, passport, currency: undefined })} />
             <View style={{ gap: 8 }}>
               <Label>Where do you live now?</Label>
               <Row gap={8} wrap>
                 <Chip label={`${flag(p.passport)} ${nameOf(p.passport)}`} on={!abroad} onPress={() => setAbroad(false)} />
                 <Chip label="🌍 Somewhere else" on={abroad} onPress={() => setAbroad(true)} />
               </Row>
-              {abroad && <CountryPicker value={p.home ?? "GB"} onChange={(h) => setP({ ...p, home: h })} />}
+              {abroad && <CountryPicker value={p.home ?? "GB"} onChange={(h) => setP({ ...p, home: h, currency: undefined })} />}
             </View>
+            <CurrencyPicker label="Your currency" value={currency} onChange={(c) => setP({ ...p, currency: c })} hint="Set from where you live. Prices and budgets show in this." />
           </View>
         )}
 

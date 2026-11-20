@@ -7,6 +7,7 @@ import { TripCard } from "@/components/TripCard";
 import { Badge, Between, Button, Card, Eyebrow, H1, H2, Hi, Muted, Row, Screen, tap } from "@/components/ui";
 import { WorldMap } from "@/components/WorldMap";
 import { useApp, useVisaRow } from "@/lib/store";
+import { useMoney } from "@/lib/useMoney";
 import { COUNTRIES } from "@/shared/countries";
 import { matchScore } from "@/shared/match";
 import { tripPhase } from "@/shared/tripTypes";
@@ -26,6 +27,7 @@ export default function Home() {
   const t = useTheme();
   const { profile, tripDocs, places } = useApp();
   const row = useVisaRow(profile?.passport);
+  const { usd } = useMoney();
 
   const lists = useMemo(() => {
     const out: Record<G, { code: string; v: VisaCode }[]> = { free: [], voa: [], online: [], vr: [] };
@@ -88,7 +90,7 @@ export default function Home() {
             const v = visaLabel(row[c.code] as VisaCode);
             return (
               <Pressable key={c.code} onPress={() => { tap(); router.push(`/country/${c.code}`); }} style={{ width: 230 }}>
-                <Poster code={c.code} region={c.region} title={c.name} pill={`$${c.dailyBudget[1]}/day`} height={190} sub={<Badge label={v.label} t={v.tone} onDark />} />
+                <Poster code={c.code} region={c.region} title={c.name} pill={`${usd(c.dailyBudget[1])}/day`} height={190} sub={<Badge label={v.label} t={v.tone} onDark />} />
               </Pressable>
             );
           })}
