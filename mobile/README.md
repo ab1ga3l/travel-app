@@ -23,6 +23,14 @@ in the folder above, and uses the same Supabase backend and the same Aviora assi
    ```
 3. Scan the QR code with your phone's camera (iPhone) or with Expo Go (Android).
 
+## Preview it in a browser
+The website serves a web preview of this app at **/app** (for example `https://your-site.vercel.app/app`).
+After changing the app, rebuild the preview and commit it:
+```bash
+npm run preview:site
+```
+This writes to `../public/app`. The real phone app (Expo Go or a store build) feels smoother and uses the phone's own tab bar.
+
 ## Build for the App Store and Google Play
 Builds run in the cloud with Expo, so you don't need a Mac for the iPhone version.
 ```bash

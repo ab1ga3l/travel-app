@@ -58,6 +58,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <span className="ico" aria-hidden="true">{n.ico}</span>{n.label}
           </Link>
         ))}
+        {/* The phone app's preview is a separate static app, so use a plain link. */}
+        <a href="/app" className="nav-link"><span className="ico" aria-hidden="true">📱</span>Try the app</a>
         <div className="rail-foot">
           <Link href="/ask" className="btn btn-sun">✨ Ask {assistantName}</Link>
         </div>
@@ -66,7 +68,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       <header className="topbar">
         <Link href="/" className="logo" style={{ padding: 0 }}><span className="logo-mark">TK</span>{APP.name}</Link>
         <div className="row" style={{ gap: 8 }}>
-          <Link href="/community" className="btn btn-ghost btn-sm" aria-label="Community">💬</Link>
+          <a href="/app" className="btn btn-ghost btn-sm" aria-label="Try the phone app">📱</a>
           <Link href="/ask" className="btn btn-sun btn-sm">✨ {assistantName}</Link>
           <Link href="/profile" className="btn btn-ghost btn-sm" aria-label="Profile and more">☰</Link>
         </div>
